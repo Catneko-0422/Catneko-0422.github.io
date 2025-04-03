@@ -6,11 +6,15 @@ export default function Home() {
   const [position, setPosition] = useState({ x: 100, y: 100 });
   const [size, setSize] = useState({ width: 300, height: 200 });
   const [dragging, setDragging] = useState(false);
-  const [resizing, setResizing] = useState(null);
+  const [resizing, setResizing] = useState<{
+    direction: string;
+    startX: number;
+    startY: number;
+  } | null>(null);
   const [time, setTime] = useState("");
   const offset = useRef({ x: 0, y: 0 });
 
-  const handleMouseDown = (e) => {
+  const handleMouseDown = (e:React.MouseEvent<HTMLDivElement>) => {
     setDragging(true);
     offset.current = {
       x: e.clientX - position.x,
@@ -18,7 +22,7 @@ export default function Home() {
     };
   };
 
-  const handleMouseMove = (e) => {
+  const handleMouseMove = (e:React.MouseEvent<HTMLDivElement>) => {
     if (dragging) {
       setPosition({
         x: e.clientX - offset.current.x,
@@ -59,10 +63,10 @@ export default function Home() {
     setResizing(null);
   };
 
-  const handleResizeMouseDown = (e, direction) => {
+  const handleResizeMouseDown = (e:React.MouseEvent<HTMLDivElement>, direction:string) => {
     e.stopPropagation();
     setResizing({ direction, startX: e.clientX, startY: e.clientY });
-  };
+  }
 
   useEffect(() => {
     const updateClock = () => {
@@ -124,7 +128,7 @@ export default function Home() {
           {/* 視窗標題（可拖動） */}
           {/* 右邊 */}
           <div className="absolute right-0 top-0 h-full w-2 cursor-ew-resize" onMouseDown={(e) => handleResizeMouseDown(e, "right")}></div> 
-          
+
           {/* 左下角 */}
           <div className="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize" onMouseDown={(e) => handleResizeMouseDown(e, "bottom left")}></div>
           {/* 下邊 */}
