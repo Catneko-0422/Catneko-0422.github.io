@@ -7,6 +7,7 @@ type WindowProps = {
   size: { width: number; height: number };
   minimized: boolean;
   maximized: boolean;
+  zIndex: number;
   onMinimize: () => void;
   onMaximize: () => void;
   onDrag: (x: number, y: number) => void;
@@ -18,6 +19,7 @@ const Window = ({
   children,
   position,
   size,
+  zIndex,
   minimized,
   maximized,
   onMinimize,
@@ -43,17 +45,19 @@ const Window = ({
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (dragging) {
-      let newX = e.clientX - offset.current.x;
-      let newY = e.clientY - offset.current.y;
-  
-      // 限制視窗不超過最大寬度與高度
-      newX = Math.max(0, Math.min(newX, window.innerWidth - size.width)); // 限制 X 軸範圍
-      newY = Math.max(0, Math.min(newY, window.innerHeight - size.height)) - 40; // 限制 Y 軸範圍
-  
-      // 呼叫 onDrag 更新位置
-      onDrag(newX, newY);
+      requestAnimationFrame(() => {
+        let newX = e.clientX - offset.current.x;
+        let newY = e.clientY - offset.current.y + 30;
+
+        // 限制視窗不超過最大寬度與高度
+        newX = Math.max(0, Math.min(newX, window.innerWidth - size.width)); // 限制 X 軸範圍
+        newY = Math.max(0, Math.min(newY, window.innerHeight - size.height)) - 40; // 限制 Y 軸範圍
+
+        // 呼叫 onDrag 更新位置
+        onDrag(newX, newY);
+      });
     }
-  };
+};
 
   const handleMouseUp = () => {
     setDragging(false);
@@ -63,59 +67,60 @@ const Window = ({
     e.stopPropagation();
     const startX = e.clientX;
     const startY = e.clientY;
-  
     const handleResizeMove = (moveEvent: MouseEvent) => {
-      const deltaX = moveEvent.clientX - startX;
-      const deltaY = moveEvent.clientY - startY;
-  
-      let newWidth = size.width;
-      let newHeight = size.height;
-      let newX = position.x;
-      let newY = position.y;
-  
-      // 根據方向來改變大小
-      switch (direction) {
-        case "top left":
-          newWidth = size.width - deltaX;
-          newHeight = size.height - deltaY;
-          newX = position.x + deltaX;
-          newY = position.y + deltaY;
-          break;
-        case "top":
-          newHeight = size.height - deltaY;
-          newY = position.y + deltaY;
-          break;
-        case "top right":
-          newWidth = size.width + deltaX;
-          newHeight = size.height - deltaY;
-          newY = position.y + deltaY;
-          break;
-        case "right":
-          newWidth = size.width + deltaX;
-          break;
-        case "bottom right":
-          newWidth = size.width + deltaX;
-          newHeight = size.height + deltaY;
-          break;
-        case "bottom":
-          newHeight = size.height + deltaY;
-          break;
-        case "bottom left":
-          newWidth = size.width - deltaX;
-          newHeight = size.height + deltaY;
-          newX = position.x + deltaX;
-          break;
-        case "left":
-          newWidth = size.width - deltaX;
-          newX = position.x + deltaX;
-          break;
-        default:
-          break;
-      }
-  
-      // 更新大小和位置
-      onResize(newWidth, newHeight);
-      onDrag(newX, newY);
+        requestAnimationFrame(() => {
+          const deltaX = moveEvent.clientX - startX;
+          const deltaY = moveEvent.clientY - startY;
+    
+          let newWidth = size.width;
+          let newHeight = size.height;
+          let newX = position.x;
+          let newY = position.y;
+    
+          // 根據方向來改變大小
+          switch (direction) {
+            case "top left":
+              newWidth = size.width - deltaX;
+              newHeight = size.height - deltaY;
+              newX = position.x + deltaX;
+              newY = position.y + deltaY;
+              break;
+            case "top":
+              newHeight = size.height - deltaY;
+              newY = position.y + deltaY;
+              break;
+            case "top right":
+              newWidth = size.width + deltaX;
+              newHeight = size.height - deltaY;
+              newY = position.y + deltaY;
+              break;
+            case "right":
+              newWidth = size.width + deltaX;
+              break;
+            case "bottom right":
+              newWidth = size.width + deltaX;
+              newHeight = size.height + deltaY;
+              break;
+            case "bottom":
+              newHeight = size.height + deltaY;
+              break;
+            case "bottom left":
+              newWidth = size.width - deltaX;
+              newHeight = size.height + deltaY;
+              newX = position.x + deltaX;
+              break;
+            case "left":
+              newWidth = size.width - deltaX;
+              newX = position.x + deltaX;
+              break;
+            default:
+              break;
+          }
+    
+          // 更新大小和位置
+          onResize(newWidth, newHeight);
+          onDrag(newX, newY);
+        });
     };
   
     const handleResizeEnd = () => {
@@ -138,11 +143,12 @@ const Window = ({
         top: position.y,
         width: maximized ? "95%" : size.width,
         height: maximized ? "80%" : size.height,
+        zIndex: zIndex,
       }}
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
     >
-      <div className="absolute inset-0">
+    <div className="absolute inset-0">
         <div className="absolute top-0 left-0 w-5 h-5 cursor-nwse-resize" onMouseDown={(e) => handleResizeMouseDown(e, "top left")}></div>
         <div className="absolute top-0 left-0 w-full h-2 cursor-ns-resize" onMouseDown={(e) => handleResizeMouseDown(e, "top")}></div>
         <div className="absolute top-0 right-0 w-5 h-5 cursor-nesw-resize" onMouseDown={(e) => handleResizeMouseDown(e, "top right")}></div>
@@ -167,10 +173,19 @@ const Window = ({
             </div>
         </div>
         <div className="absolute left-0 top-0 h-full w-2 cursor-ew-resize" onMouseDown={(e) => handleResizeMouseDown(e, "left")}></div>
-        <div className="p-4 text-gray-900 h-full">{children}</div>
-        <div className="absolute right-0 top-0 h-full w-2 cursor-ew-resize" onMouseDown={(e) => handleResizeMouseDown(e, "right")}></div>
+        
+        <div
+            className="p-4 text-gray-900"
+            style={{
+                maxHeight: `${size.height*0.15}vh`,  
+                overflowY: 'auto',  
+            }}
+        >
+            {children}
         </div>
-        <div className="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize" onMouseDown={(e) => handleResizeMouseDown(e, "bottom left")}></div>
+        <div className="absolute right-0 top-0 h-full w-2 cursor-ew-resize" onMouseDown={(e) => handleResizeMouseDown(e, "right")}></div>
+    </div>
+    <div className="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize" onMouseDown={(e) => handleResizeMouseDown(e, "bottom left")}></div>
         <div className="absolute bottom-0 left-0 w-full h-2 cursor-ns-resize" onMouseDown={(e) => handleResizeMouseDown(e, "bottom")}></div>
         <div className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize" onMouseDown={(e) => handleResizeMouseDown(e, "bottom right")}></div>
     </div>
