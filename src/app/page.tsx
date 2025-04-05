@@ -25,7 +25,7 @@ export default function Home() {
       minimized: false,
       maximized: false,
       position: { x: 420, y: 10 },
-      size: { width: 850, height: 240 },
+      size: { width: 400, height: 460 },
       content: <Project />,
       zIndex: 2,
     },
@@ -34,10 +34,10 @@ export default function Home() {
       title: "Contact",
       minimized: false,
       maximized: false,
-      position: { x: 420, y: 250 },
-      size: { width: 850, height: 220 },
+      position: { x: 830, y: 10 },
+      size: { width: 400, height: 460 },
       content: <Contact />,
-      zIndex: 1, 
+      zIndex: 1,
     },
   ]);
 

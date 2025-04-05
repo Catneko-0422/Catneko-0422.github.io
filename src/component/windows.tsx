@@ -175,14 +175,14 @@ const Window = ({
         <div className="absolute left-0 top-0 h-full w-2 cursor-ew-resize" onMouseDown={(e) => handleResizeMouseDown(e, "left")}></div>
         
         <div
-            className="p-4 text-gray-900"
-            style={{
-                maxHeight: `${size.height*0.15}vh`,  
-                overflowY: 'auto',  
-            }}
+          className="p-4 text-gray-900 overflow-y-auto transition-all duration-300 ease-in-out"
+          style={{
+            maxHeight: `${size.height * 0.85}px`, // 修正邏輯錯誤，原本寫成 vh 太小了喵
+          }}
         >
-            {children}
+          {children}
         </div>
+
         <div className="absolute right-0 top-0 h-full w-2 cursor-ew-resize" onMouseDown={(e) => handleResizeMouseDown(e, "right")}></div>
     </div>
     <div className="absolute bottom-0 left-0 w-4 h-4 cursor-nesw-resize" onMouseDown={(e) => handleResizeMouseDown(e, "bottom left")}></div>

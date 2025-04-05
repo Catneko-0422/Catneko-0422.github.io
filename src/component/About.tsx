@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 export default function About() {
     return (
         <motion.div
-            className="text-center p-8"
+            className="text-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
