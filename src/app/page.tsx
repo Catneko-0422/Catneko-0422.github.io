@@ -5,9 +5,10 @@ import Window from "../component/windows";
 import About from '../component/About';
 import Project from "../component/Project"
 import Contact from "../component/Contact"
-
+import MobileLayout from "../component/MobileLayout"
 
 export default function Home() {
+  const [isMobile, setIsMobile] = useState(false);
   const [windows, setWindows] = useState([
     {
       id: 1,
@@ -45,6 +46,16 @@ export default function Home() {
   const [time, setTime] = useState("");
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
     const updateClock = () => {
       const now = new Date();
       const formattedDateTime = now.toLocaleString("zh-TW", {
@@ -71,6 +82,10 @@ export default function Home() {
       )
     );
   };
+
+  if (isMobile) {
+    return <MobileLayout />;
+  }
 
   return (
     <div>
