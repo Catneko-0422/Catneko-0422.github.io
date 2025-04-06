@@ -47,7 +47,8 @@ export default function Home() {
 
   useEffect(() => {
     const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
+      const isMobileDevice = window.matchMedia('(max-width: 1024px)').matches;
+      setIsMobile(isMobileDevice);
     };
 
     checkMobile();
