@@ -6,6 +6,7 @@ import About from '../component/About';
 import Project from "../component/Project"
 import Contact from "../component/Contact"
 import MobileLayout from "../component/MobileLayout"
+import Chat from "../component/Chat"
 
 export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
@@ -20,7 +21,7 @@ export default function Home() {
       originalPosition: { x: 10, y: 10 },
       originalSize: { width: 400, height: 460 },
       content: <About />,
-      zIndex: 3,
+      zIndex: 4,
     },
     {
       id: 2,
@@ -32,7 +33,7 @@ export default function Home() {
       originalPosition: { x: 420, y: 10 },
       originalSize: { width: 400, height: 460 },
       content: <Project />,
-      zIndex: 2,
+      zIndex: 3,
     },
     {
       id: 3,
@@ -44,6 +45,16 @@ export default function Home() {
       originalPosition: { x: 830, y: 10 },
       originalSize: { width: 400, height: 460 },
       content: <Contact />,
+      zIndex: 2,
+    },
+    {
+      id: 4,
+      title: "Chat",
+      minimized: false,
+      maximized: false,
+      position: { x: 10, y: 480 },
+      size: { width: 400, height: 400 },
+      content: <Chat />,
       zIndex: 1,
     },
   ]);
@@ -86,10 +97,8 @@ export default function Home() {
     setWindows((prev) =>
       prev.map((w) => {
         if (w.id === id) {
-          // 如果是最大化操作
           if ('maximized' in newData) {
             if (newData.maximized) {
-              // 保存當前位置和大小
               return {
                 ...w,
                 ...newData,
@@ -98,19 +107,24 @@ export default function Home() {
                 position: { x: 30, y: 25 },
                 size: { width: window.innerWidth - 60, height: window.innerHeight - 100 },
                 zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
-              };
+              } as typeof windows[0];
             } else {
-              // 恢復原始位置和大小
               return {
                 ...w,
                 ...newData,
-                position: w.originalPosition,
-                size: w.originalSize,
+                position: w.originalPosition || w.position,
+                size: w.originalSize || w.size,
                 zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
-              };
+              } as typeof windows[0];
             }
           }
-          return { ...w, ...newData, zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1 };
+          return {
+            ...w,
+            ...newData,
+            position: newData.position || w.position,
+            size: newData.size || w.size,
+            zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
+          } as typeof windows[0];
         }
         return w;
       })
@@ -156,7 +170,7 @@ export default function Home() {
       </div>
 
       <footer className="fixed bottom-0 left-0 w-full h-12 border-t-2 border-blue-700 bg-gray-900 flex items-center p-2 shadow-lg">
-        <div className="windows-list w-50 h-10 bg-gray-700 flex items-center justify-start gap-2 px-2">
+        <div className="windows-list w-60 h-10 bg-gray-700 flex items-center justify-start gap-2 px-2">
           {windows
             .filter((w) => w.minimized)
             .map((w) => (
