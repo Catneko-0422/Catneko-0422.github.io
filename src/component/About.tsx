@@ -45,34 +45,35 @@ export default function About() {
             </motion.p>
 
             <motion.div
-                className="mt-8"
+                className="mt-8 max-w-2xl mx-auto"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.7 }}
             >
                 <Section title="技能">
-                    <li>程式語言：JavaScript, TypeScript, Python, C++</li>
-                    <li>前端技術：React, Next.js, TailwindCSS, HTML, CSS</li>
-                    <li>後端技術：Node.js, Express, Flask</li>
-                    <li>資料庫：MongoDB, MySQL</li>
-                    <li>版本控制：Git, GitHub</li>
+                    <li className="text-center">硬體技術：STM32, ESP32, Raspberry Pi, Arduino, PLC, 電力控制</li>
+                    <li className="text-center">程式語言：JavaScript, TypeScript, Python, C++</li>
+                    <li className="text-center">前端技術：React, Next.js, TailwindCSS, HTML, CSS</li>
+                    <li className="text-center">後端技術：Node.js, Express, Flask</li>
+                    <li className="text-center">資料庫：SQLite, MySQL</li>
+                    <li className="text-center">版本控制：Git, GitHub</li>
                 </Section>
 
                 <Section title="學歷">
-                    <li>2020 ~ 2023：市立木柵高級工業職業學校 電機科</li>
-                    <li>2023 ~ 現在：國立雲林科技大學 資訊管理學系 人工智慧計優專班</li>
+                    <li className="text-center">2020 ~ 2023：市立木柵高級工業職業學校 電機科</li>
+                    <li className="text-center">2023 ~ 現在：國立雲林科技大學 資訊管理學系 人工智慧計優專班</li>
                 </Section>
 
                 <Section title="比賽">
-                    <li>113年全國高級中等學校技藝競賽 工科賽 工業配線金手第七名</li>
-                    <li>國立雲林科技大學 資訊工程系 校內團隊程式競賽佳作</li>
+                    <li className="text-center">113年全國高級中等學校技藝競賽 工科賽 工業配線金手第七名</li>
+                    <li className="text-center">國立雲林科技大學 資訊工程系 校內團隊程式競賽佳作</li>
                 </Section>
 
                 <Section title="證照">
-                    <li>室內配線丙級證照</li>
-                    <li>自來水配管丙級證照</li>
-                    <li>工業電子丙級證照</li>
-                    <li>工業配縣乙丙級證照</li>
+                    <li className="text-center">室內配線丙級證照</li>
+                    <li className="text-center">自來水配管丙級證照</li>
+                    <li className="text-center">工業電子丙級證照</li>
+                    <li className="text-center">工業配縣乙丙級證照</li>
                 </Section>
             </motion.div>
         </motion.div>
@@ -82,14 +83,14 @@ export default function About() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
     return (
         <motion.div
-            className="mt-6"
+            className="mt-6 text-center"
             initial={{ x: -20, opacity: 0 }}
             whileInView={{ x: 0, opacity: 1 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
         >
             <h3 className="text-lg font-semibold text-blue-600">{title}</h3>
-            <ul className="text-left ml-8 text-gray-600">{children}</ul>
+            <ul className="text-gray-600 space-y-2">{children}</ul>
         </motion.div>
     );
 }

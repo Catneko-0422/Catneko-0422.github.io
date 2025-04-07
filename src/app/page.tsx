@@ -17,6 +17,8 @@ export default function Home() {
       maximized: false,
       position: { x: 10, y: 10 },
       size: { width: 400, height: 460 },
+      originalPosition: { x: 10, y: 10 },
+      originalSize: { width: 400, height: 460 },
       content: <About />,
       zIndex: 3,
     },
@@ -27,6 +29,8 @@ export default function Home() {
       maximized: false,
       position: { x: 420, y: 10 },
       size: { width: 400, height: 460 },
+      originalPosition: { x: 420, y: 10 },
+      originalSize: { width: 400, height: 460 },
       content: <Project />,
       zIndex: 2,
     },
@@ -37,6 +41,8 @@ export default function Home() {
       maximized: false,
       position: { x: 830, y: 10 },
       size: { width: 400, height: 460 },
+      originalPosition: { x: 830, y: 10 },
+      originalSize: { width: 400, height: 460 },
       content: <Contact />,
       zIndex: 1,
     },
@@ -78,9 +84,36 @@ export default function Home() {
 
   const updateWindow = (id: number, newData: Partial<typeof windows[0]>) => {
     setWindows((prev) =>
-      prev.map((w) =>
-        w.id === id ? { ...w, ...newData, zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1 } : w
-      )
+      prev.map((w) => {
+        if (w.id === id) {
+          // 如果是最大化操作
+          if ('maximized' in newData) {
+            if (newData.maximized) {
+              // 保存當前位置和大小
+              return {
+                ...w,
+                ...newData,
+                originalPosition: w.position,
+                originalSize: w.size,
+                position: { x: 30, y: 25 },
+                size: { width: window.innerWidth - 60, height: window.innerHeight - 100 },
+                zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
+              };
+            } else {
+              // 恢復原始位置和大小
+              return {
+                ...w,
+                ...newData,
+                position: w.originalPosition,
+                size: w.originalSize,
+                zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
+              };
+            }
+          }
+          return { ...w, ...newData, zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1 };
+        }
+        return w;
+      })
     );
   };
 
