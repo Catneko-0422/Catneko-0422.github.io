@@ -96,6 +96,9 @@
   --sidebar-accent-foreground: oklch(0.21 0.034 264.665);
   --sidebar-border: oklch(0.928 0.006 264.531);
   --sidebar-ring: oklch(0.707 0.022 261.325);
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 .dark {
@@ -130,6 +133,9 @@
   --sidebar-accent-foreground: oklch(0.985 0.002 247.839);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.551 0.027 264.364);
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
 }
 
 @layer base {
@@ -138,6 +144,143 @@
   }
   body {
     @apply bg-background text-foreground;
+    color: rgb(var(--foreground-rgb));
+    background: linear-gradient(
+        to bottom,
+        transparent,
+        rgb(var(--background-end-rgb))
+      )
+      rgb(var(--background-start-rgb));
   }
 }
+
+/* 深色模式樣式 */
+.dark .bg-gray-800 {
+  background-color: #1a1a1a;
+}
+
+.dark .bg-gray-700 {
+  background-color: #2d2d2d;
+}
+
+.dark .bg-gray-900 {
+  background-color: #0a0a0a;
+}
+
+.dark .text-white {
+  color: #ffffff;
+}
+
+.dark .border-gray-700 {
+  border-color: #2d2d2d;
+}
+
+/* 淺色模式樣式 */
+.light .bg-gray-800 {
+  background-color: #f3f4f6;
+}
+
+.light .bg-gray-700 {
+  background-color: #e5e7eb;
+}
+
+.light .bg-gray-900 {
+  background-color: #f9fafb;
+}
+
+.light .text-white {
+  color: #1f2937;
+}
+
+.light .border-gray-700 {
+  border-color: #e5e7eb;
+}
+
+/* 聊天組件主題樣式 */
+.dark .chat-message {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+.light .chat-message {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+/* 輸入框主題樣式 */
+.dark input {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+.light input {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+/* 按鈕主題樣式 */
+.dark button {
+  background-color: #2d2d2d;
+  color: #ffffff;
+}
+
+.light button {
+  background-color: #e5e7eb;
+  color: #1f2937;
+}
+
+/* 主題切換開關樣式 */
+.theme-switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 30px;
+}
+
+.theme-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.theme-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #2d2d2d;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.theme-slider:before {
+  position: absolute;
+  content: "🌙";
+  height: 22px;
+  width: 22px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+input:checked + .theme-slider {
+  background-color: #e5e7eb;
+}
+
+input:checked + .theme-slider:before {
+  content: "🌞";
+  transform: translateX(30px);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 

@@ -3,9 +3,11 @@ import About from './About';
 import Project from './Project';
 import Contact from './Contact';
 import Chat from './Chat';
+import { useTheme } from '../context/ThemeContext';
 
 const MobileLayout = () => {
   const [activeTab, setActiveTab] = useState('about');
+  const { theme, toggleTheme } = useTheme();
 
   const renderContent = () => {
     switch (activeTab) {
@@ -25,8 +27,16 @@ const MobileLayout = () => {
   return (
     <div className="flex flex-col h-screen bg-black/90">
       {/* 頂部導航欄 */}
-      <div className="w-full bg-gray-800 text-white p-4">
-        <h1 className="text-xl font-bold text-center text-white">Catneko</h1>
+      <div className="w-full bg-gray-800 text-white p-4 flex justify-between items-center">
+        <h1 className="text-xl font-bold text-white">Catneko</h1>
+        <label className="theme-switch">
+          <input
+            type="checkbox"
+            checked={theme === 'light'}
+            onChange={toggleTheme}
+          />
+          <span className="theme-slider"></span>
+        </label>
       </div>
 
       {/* 主要內容區域 */}

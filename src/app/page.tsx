@@ -7,8 +7,9 @@ import Project from "../component/Project"
 import Contact from "../component/Contact"
 import MobileLayout from "../component/MobileLayout"
 import Chat from "../component/Chat"
+import { ThemeProvider, useTheme } from "../context/ThemeContext";
 
-export default function Home() {
+const HomeContent = () => {
   const [isMobile, setIsMobile] = useState(false);
   const [windows, setWindows] = useState([
     {
@@ -61,6 +62,7 @@ export default function Home() {
 
   const [language, setLanguage] = useState("中文");
   const [time, setTime] = useState("");
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     const checkMobile = () => {
@@ -184,6 +186,14 @@ export default function Home() {
             ))}
         </div>
         <div className="flex items-center ml-auto gap-2">
+          <label className="theme-switch">
+            <input
+              type="checkbox"
+              checked={theme === 'light'}
+              onChange={toggleTheme}
+            />
+            <span className="theme-slider"></span>
+          </label>
           <div className="Language w-28 h-10 bg-gray-700 flex items-center justify-center text-white font-mono">
             <select
               value={language}
@@ -201,5 +211,13 @@ export default function Home() {
         </div>
       </footer>
     </div>
+  );
+};
+
+export default function Home() {
+  return (
+    <ThemeProvider>
+      <HomeContent />
+    </ThemeProvider>
   );
 }
