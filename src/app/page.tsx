@@ -172,13 +172,13 @@ const HomeContent = () => {
       </div>
 
       <footer className="fixed bottom-0 left-0 w-full h-12 border-t-2 border-blue-700 bg-gray-900 flex items-center p-2 shadow-lg">
-        <div className="windows-list w-60 h-10 bg-gray-700 flex items-center justify-start gap-2 px-2">
+        <div className="windows-list w-100 h-10 bg-gray-700 flex items-center justify-start gap-2 px-2">
           {windows
             .filter((w) => w.minimized)
             .map((w) => (
               <button
                 key={w.id}
-                className="text-white font-bold"
+                className="text-white"
                 onClick={() => updateWindow(w.id, { minimized: false })}
               >
                 {w.title}

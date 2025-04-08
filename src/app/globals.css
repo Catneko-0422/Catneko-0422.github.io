@@ -284,3 +284,93 @@ input:checked + .theme-slider:before {
 @tailwind components;
 @tailwind utilities;
 
+/* Windows List 樣式 */
+.windows-list {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.windows-list button {
+  position: relative;
+  padding: 8px 12px;
+  background: transparent;
+  color: white;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.windows-list button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(0);
+  transition: transform 0.3s ease;
+}
+
+.windows-list button:hover::before {
+  transform: scale(1);
+}
+
+.windows-list button::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #3b82f6;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s ease;
+}
+
+.windows-list button:hover::after {
+  transform: scaleX(1);
+}
+
+/* 打字機動畫 */
+@keyframes typing {
+  from { 
+    width: 0;
+    opacity: 0;
+  }
+  to { 
+    width: 100%;
+    opacity: 1;
+  }
+}
+
+@keyframes blink {
+  0%, 100% { 
+    border-color: white;
+    opacity: 1;
+  }
+  50% { 
+    border-color: transparent;
+    opacity: 0.5;
+  }
+}
+
+.windows-list button {
+  white-space: nowrap;
+  overflow: hidden;
+  animation: 
+    typing 0.8s ease-out forwards,
+    blink 1s ease-in-out infinite;
+  animation-delay: 0.2s;
+  opacity: 0;
+}
+
