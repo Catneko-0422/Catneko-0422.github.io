@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 
 type Message = {
   id: number;
@@ -13,12 +14,6 @@ const Chat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [isTyping, setIsTyping] = useState(false);
 
-  // 固定回應列表
-  const responses = [
-    "你好！我是 Catneko 的 AI 助手，很高興為你服務。",
-    "此功能正在開發中。",
-  ];
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -27,7 +22,7 @@ const Chat = () => {
     scrollToBottom();
   }, [messages]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim()) return;
 
@@ -43,20 +38,39 @@ const Chat = () => {
     setInput('');
     setIsTyping(true);
 
-    // 模擬 AI 思考時間
-    setTimeout(() => {
-      // 隨機選擇一個回應
-      const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+    try {
+      const requestData = {
+        model: 'alice',
+        messages: [{ role: 'user', content: input }], 
+        stream: false,
+      };
+
+      const response = await axios.post('https://webchat.nekocat.cc/api/chat', requestData, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
       const aiMessage: Message = {
         id: Date.now() + 1,
-        text: randomResponse,
+        text: response.data.message?.content || '沒有回應內容喵～',
         isUser: false,
         timestamp: new Date(),
       };
 
       setMessages(prev => [...prev, aiMessage]);
+    } catch (error) {
+      console.error('Error fetching AI response:', error);
+      const errorMessage: Message = {
+        id: Date.now() + 1,
+        text: '抱歉，無法獲取回應。',
+        isUser: false,
+        timestamp: new Date(),
+      };
+      setMessages(prev => [...prev, errorMessage]);
+    } finally {
       setIsTyping(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -69,14 +83,12 @@ const Chat = () => {
           >
             <div
               className={`max-w-[80%] rounded-lg p-3 ${
-                message.isUser
-                  ? 'bg-blue-500 text-white'
-                  : 'bg-gray-700 text-white'
+                message.isUser ? 'bg-blue-500 text-white' : 'bg-gray-700 text-white'
               }`}
             >
               <p className="text-sm">{message.text}</p>
               <p className="text-xs opacity-70 mt-1">
-                {message.timestamp.toLocaleTimeString()}
+                {new Date(message.timestamp).toLocaleTimeString()}
               </p>
             </div>
           </div>
@@ -116,4 +128,4 @@ const Chat = () => {
   );
 };
 
-export default Chat; 
+export default Chat;
