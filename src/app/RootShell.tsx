@@ -79,7 +79,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
         </div>
       </header>
 
-      <main className="w-full flex flex-col items-center mt-12 text-center flex-grow">
+      <main className="w-full flex flex-col items-center mt-1 text-center flex-grow">
         {children}
       </main>
 
