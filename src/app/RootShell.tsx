@@ -32,13 +32,13 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
     <div
       className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#222229] text-white flex flex-col min-h-screen`}
     >
-      <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-[#98BAD2] font-bold text-xl">
-        <Link href="/" className="text-2xl font-bold absolute top-6 left-15">
+      <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-[#98BAD2] font-bold text-xl relative">
+        <Link href="/" className="text-2xl font-bold hover:underline">
           nekocat.cc
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="space-x-15 absolute top-6 right-15 text-[24px]">
+        <nav className="hidden md:flex gap-6 text-[20px]">
           {navItems.map((item) => (
             <Link
               key={item.label}

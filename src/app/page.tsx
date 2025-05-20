@@ -6,7 +6,6 @@ import { faEnvelope, faBookOpen } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-
 const getRandomChar = () => {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
   return chars[Math.floor(Math.random() * chars.length)];
@@ -34,7 +33,7 @@ const Home: React.FC = () => {
       setDisplayText(updatedText);
 
       if (!isDeleting && updatedText === current) {
-        setTimeout(() => setIsDeleting(true), 1000); // 停留 1 秒再刪除
+        setTimeout(() => setIsDeleting(true), 1000);
       } else if (isDeleting && updatedText === '') {
         setIsDeleting(false);
         setLoopNum((prev) => prev + 1);
@@ -45,7 +44,7 @@ const Home: React.FC = () => {
     return () => clearTimeout(typingTimeout);
   }, [displayText, isDeleting, loopNum]);
 
-  // Nekocat.cc 解碼動畫 useEffect
+  // 解碼動畫 useEffect
   useEffect(() => {
     const scrambleAll = () => {
       const scrambled = target.split('').map(() => getRandomChar());
@@ -80,7 +79,7 @@ const Home: React.FC = () => {
       await runDecode();
     };
 
-    triggerCycle(); // 初始化
+    triggerCycle();
 
     const interval = setInterval(() => {
       triggerCycle();
@@ -104,9 +103,9 @@ const Home: React.FC = () => {
           />
         </div>
 
-        <div className="text-2xl font-bold text-center lg:text-left flex flex-col items-center lg:items-start lg:mt-35">
+        <div className="text-center lg:text-left flex flex-col items-center lg:items-start lg:mt-35">
           <motion.h2
-            className="text-3xl font-bold mb-2"
+            className="text-xl sm:text-2xl md:text-3xl font-bold mb-2"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.5, duration: 0.6 }}
@@ -119,7 +118,7 @@ const Home: React.FC = () => {
           </motion.h2>
 
           <motion.h1
-            className="text-6xl md:text-7xl lg:text-8xl font-bold text-[#98BAD2] mb-4 font-mono tracking-wider"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#98BAD2] mb-4 font-mono tracking-wider"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 0.3 }}
@@ -137,7 +136,7 @@ const Home: React.FC = () => {
             <span className="animate-pulse text-[#BABABA]">|</span>
           </motion.h1>
 
-          <p className="text-lg md:text-xl text-[#BABABA] leading-relaxed max-w-2xl">
+          <p className="text-sm sm:text-base md:text-lg text-[#BABABA] leading-relaxed max-w-2xl">
             A student from <span className="text-green-400">NYUST</span> who loves{' '}
             <span className="text-pink-400">AI</span> and{' '}
             <span className="text-yellow-400">programming</span>.<br />
@@ -164,7 +163,7 @@ const Home: React.FC = () => {
                 <FontAwesomeIcon icon={faEnvelope} />
               </a>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
     </div>
