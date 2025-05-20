@@ -1,223 +1,174 @@
 'use client';
 
-import React, { useState, useEffect } from "react";
-import Window from "../component/windows";
-import About from '../component/About';
-import Project from "../component/Project"
-import Contact from "../component/Contact"
-import MobileLayout from "../component/MobileLayout"
-import Chat from "../component/Chat"
-import { ThemeProvider, useTheme } from "../context/ThemeContext";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGithub, faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
+import { faEnvelope, faBookOpen } from '@fortawesome/free-solid-svg-icons';
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
-const HomeContent = () => {
-  const [isMobile, setIsMobile] = useState(false);
-  const [windows, setWindows] = useState([
-    {
-      id: 1,
-      title: "About",
-      minimized: false,
-      maximized: false,
-      position: { x: 10, y: 10 },
-      size: { width: 400, height: 460 },
-      originalPosition: { x: 10, y: 10 },
-      originalSize: { width: 400, height: 460 },
-      content: <About />,
-      zIndex: 4,
-    },
-    {
-      id: 2,
-      title: "Project",
-      minimized: false,
-      maximized: false,
-      position: { x: 420, y: 10 },
-      size: { width: 400, height: 460 },
-      originalPosition: { x: 420, y: 10 },
-      originalSize: { width: 400, height: 460 },
-      content: <Project />,
-      zIndex: 3,
-    },
-    {
-      id: 3,
-      title: "Contact",
-      minimized: false,
-      maximized: false,
-      position: { x: 830, y: 10 },
-      size: { width: 400, height: 460 },
-      originalPosition: { x: 830, y: 10 },
-      originalSize: { width: 400, height: 460 },
-      content: <Contact />,
-      zIndex: 2,
-    },
-    {
-      id: 4,
-      title: "Chat",
-      minimized: false,
-      maximized: false,
-      position: { x: 10, y: 480 },
-      size: { width: 400, height: 400 },
-      content: <Chat />,
-      zIndex: 1,
-    },
-  ]);
 
-  const [language, setLanguage] = useState("中文");
-  const [time, setTime] = useState("");
-  const { theme, toggleTheme } = useTheme();
+const getRandomChar = () => {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=';
+  return chars[Math.floor(Math.random() * chars.length)];
+};
 
+const Home: React.FC = () => {
+  const target = 'Nekocat.cc';
+  const [letters, setLetters] = useState<string[]>(Array(target.length).fill(''));
+
+  const titles = ['NYUST student', 'AI explorer', 'Fullstack developer', 'Techno-otaku'];
+  const [loopNum, setLoopNum] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [displayText, setDisplayText] = useState('');
+  const [typingSpeed, setTypingSpeed] = useState(150);
+
+  // 打字機效果 useEffect
   useEffect(() => {
-    const checkMobile = () => {
-      const isMobileDevice = window.matchMedia('(max-width: 1024px)').matches;
-      setIsMobile(isMobileDevice);
+    const current = titles[loopNum % titles.length];
+
+    const handleTyping = () => {
+      const updatedText = isDeleting
+        ? current.substring(0, displayText.length - 1)
+        : current.substring(0, displayText.length + 1);
+
+      setDisplayText(updatedText);
+
+      if (!isDeleting && updatedText === current) {
+        setTimeout(() => setIsDeleting(true), 1000); // 停留 1 秒再刪除
+      } else if (isDeleting && updatedText === '') {
+        setIsDeleting(false);
+        setLoopNum((prev) => prev + 1);
+      }
     };
 
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+    const typingTimeout = setTimeout(handleTyping, typingSpeed);
+    return () => clearTimeout(typingTimeout);
+  }, [displayText, isDeleting, loopNum]);
 
+  // Nekocat.cc 解碼動畫 useEffect
   useEffect(() => {
-    const updateClock = () => {
-      const now = new Date();
-      const formattedDateTime = now.toLocaleString("zh-TW", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: false,
+    const scrambleAll = () => {
+      const scrambled = target.split('').map(() => getRandomChar());
+      setLetters(scrambled);
+    };
+
+    const decodeLetter = async (index: number, correctChar: string) => {
+      for (let i = 0; i < 5; i++) {
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        setLetters((prev) => {
+          const next = [...prev];
+          next[index] = getRandomChar();
+          return next;
+        });
+      }
+      setLetters((prev) => {
+        const next = [...prev];
+        next[index] = correctChar;
+        return next;
       });
-      setTime(formattedDateTime);
     };
 
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
+    const runDecode = async () => {
+      for (let i = 0; i < target.length; i++) {
+        await decodeLetter(i, target[i]);
+      }
+    };
+
+    const triggerCycle = async () => {
+      scrambleAll();
+      await new Promise((resolve) => setTimeout(resolve, 10));
+      await runDecode();
+    };
+
+    triggerCycle(); // 初始化
+
+    const interval = setInterval(() => {
+      triggerCycle();
+    }, 10000);
+
     return () => clearInterval(interval);
   }, []);
 
-  const updateWindow = (id: number, newData: Partial<typeof windows[0]>) => {
-    setWindows((prev) =>
-      prev.map((w) => {
-        if (w.id === id) {
-          if ('maximized' in newData) {
-            if (newData.maximized) {
-              return {
-                ...w,
-                ...newData,
-                originalPosition: w.position,
-                originalSize: w.size,
-                position: { x: 30, y: 25 },
-                size: { width: window.innerWidth - 60, height: window.innerHeight - 100 },
-                zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
-              } as typeof windows[0];
-            } else {
-              return {
-                ...w,
-                ...newData,
-                position: w.originalPosition || w.position,
-                size: w.originalSize || w.size,
-                zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
-              } as typeof windows[0];
-            }
-          }
-          return {
-            ...w,
-            ...newData,
-            position: newData.position || w.position,
-            size: newData.size || w.size,
-            zIndex: Math.max(...prev.map((w) => w.zIndex)) + 1
-          } as typeof windows[0];
-        }
-        return w;
-      })
-    );
-  };
-
-  if (isMobile) {
-    return <MobileLayout />;
-  }
-
   return (
-    <div>
-      <div className="h-screen w-screen flex items-center justify-center bg-black/90">
-        {windows.map((win) =>
-          !win.minimized ? (
-            <Window
-              key={win.id}
-              title={win.title}
-              position={win.position}
-              size={win.size}
-              minimized={win.minimized}
-              maximized={win.maximized}
-              zIndex={win.zIndex}
-              onMinimize={() => updateWindow(win.id, { minimized: true })}
-              onMaximize={() =>
-                updateWindow(win.id, {
-                  maximized: !win.maximized,
-                  position: !win.maximized ? { x: 30, y: 25 } : { x: 100, y: 100 },
-                  size: !win.maximized
-                    ? { width: window.innerWidth - 60, height: window.innerHeight - 100 }
-                    : { width: 300, height: 200 },
-                })
-              }
-              onDrag={(x, y) => updateWindow(win.id, { position: { x, y } })}
-              onResize={(width, height) =>
-                updateWindow(win.id, { size: { width, height } })
-              }
-            >
-              {win.content}
-            </Window>
-          ) : null
-        )}
+    <div className="w-full flex flex-col items-center text-white">
+      <div className="w-full h-[30vh]">
+        <img src="/background.gif" alt="Background" className="w-full h-full object-cover" />
       </div>
 
-      <footer className="fixed bottom-0 left-0 w-full h-12 border-t-2 border-blue-700 bg-gray-900 flex items-center p-2 shadow-lg">
-        <div className="windows-list w-100 h-10 bg-gray-700 flex items-center justify-start gap-2 px-2">
-          {windows
-            .filter((w) => w.minimized)
-            .map((w) => (
-              <button
-                key={w.id}
-                className="text-white"
-                onClick={() => updateWindow(w.id, { minimized: false })}
+      <div className="w-full max-w-6xl px-4 -mt-30 flex flex-col lg:flex-row items-center lg:items-start justify-start gap-8">
+        <div className="mt-8 lg:mt-0 flex justify-center lg:justify-start">
+          <img
+            src="/profile.jpg"
+            alt="Profile"
+            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full shadow-lg"
+          />
+        </div>
+
+        <div className="text-2xl font-bold text-center lg:text-left flex flex-col items-center lg:items-start lg:mt-35">
+          <motion.h2
+            className="text-3xl font-bold mb-2"
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5, duration: 0.6 }}
+          >
+            Hello~ I'm a{' '}
+            <span className="text-purple-400">
+              {displayText}
+              <span className="animate-pulse">|</span>
+            </span>
+          </motion.h2>
+
+          <motion.h1
+            className="text-6xl md:text-7xl lg:text-8xl font-bold text-[#98BAD2] mb-4 font-mono tracking-wider"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 0.3 }}
+          >
+            {letters.map((char, index) => (
+              <motion.span
+                key={index}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: index * 0.05 }}
               >
-                {w.title}
-              </button>
+                {char}
+              </motion.span>
             ))}
+            <span className="animate-pulse text-[#BABABA]">|</span>
+          </motion.h1>
+
+          <p className="text-lg md:text-xl text-[#BABABA] leading-relaxed max-w-2xl">
+            A student from <span className="text-green-400">NYUST</span> who loves{' '}
+            <span className="text-pink-400">AI</span> and{' '}
+            <span className="text-yellow-400">programming</span>.<br />
+            I am familiar with both <span className="text-yellow-300">hardware</span> and{' '}
+            <span className="text-blue-300">software</span>, exploring various technologies.<br />
+            stay curious, <span className="text-pink-400">always learning</span>.
+          </p>
+
+          <div className="w-full mt-10 flex justify-center lg:justify-start">
+            <div className="flex gap-8 text-4xl">
+              <a href="https://blog.nekocat.cc" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-white">
+                <FontAwesomeIcon icon={faBookOpen} />
+              </a>
+              <a href="https://www.facebook.com/neko.cat.863674/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-blue-400">
+                <FontAwesomeIcon icon={faFacebook} />
+              </a>
+              <a href="https://www.instagram.com/neko._cat422/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-pink-400">
+                <FontAwesomeIcon icon={faInstagram} />
+              </a>
+              <a href="https://github.com/Catneko-0422" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-white">
+                <FontAwesomeIcon icon={faGithub} />
+              </a>
+              <a href="mailto:linyian0422@gmail.com" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-green-400">
+                <FontAwesomeIcon icon={faEnvelope} />
+              </a>
+            </div>
+          </div> 
         </div>
-        <div className="flex items-center ml-auto gap-2">
-          <label className="theme-switch">
-            <input
-              type="checkbox"
-              checked={theme === 'light'}
-              onChange={toggleTheme}
-            />
-            <span className="theme-slider"></span>
-          </label>
-          <div className="Language w-28 h-10 bg-gray-700 flex items-center justify-center text-white font-mono">
-            <select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value)}
-              className="bg-transparent text-white outline-none cursor-pointer"
-            >
-              <option className="text-black" value="中文">中文</option>
-              <option className="text-black" value="English">English</option>
-              <option className="text-black" value="日本語">日本語</option>
-            </select>
-          </div>
-          <div className="now-time w-50 h-10 bg-gray-700 flex items-center justify-center text-white font-mono">
-            {time}
-          </div>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 };
 
-export default function Home() {
-  return (
-    <ThemeProvider>
-      <HomeContent />
-    </ThemeProvider>
-  );
-}
+export default Home;
