@@ -95,13 +95,18 @@ const Home: React.FC = () => {
       </div>
 
       <div className="w-full max-w-6xl px-4 -mt-30 flex flex-col lg:flex-row items-center lg:items-start justify-start gap-8">
-        <div className="mt-8 lg:mt-0 flex justify-center lg:justify-start">
+        <motion.div
+          className="mt-8 lg:mt-0 flex justify-center lg:justify-start"
+          initial={{ opacity: 0, scale: 0.8, filter: 'blur(10px)' }}
+          whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+          transition={{ duration: 0.8 }}
+        >
           <img
             src="/profile.jpg"
             alt="Profile"
             className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full shadow-lg"
           />
-        </div>
+        </motion.div>
 
         <div className="text-center lg:text-left flex flex-col items-center lg:items-start lg:mt-35">
           <motion.h2
