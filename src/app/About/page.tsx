@@ -33,12 +33,12 @@ const SkillRadar = () => (
                   label: skill.label,
                   data: [skill.value, 100 - skill.value],
                   backgroundColor: [skill.color, 'rgba(255, 255, 255, 0.05)'],
-                  borderWidth: 0,
-                  cutout: '80%'
+                  borderWidth: 0
                 }
               ]
             }}
             options={{
+              cutout: '80%',
               plugins: {
                 legend: { display: false },
                 tooltip: { enabled: false }
