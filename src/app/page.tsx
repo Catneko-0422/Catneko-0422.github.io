@@ -104,7 +104,8 @@ const Home: React.FC = () => {
           <img
             src="/profile.jpg"
             alt="Profile"
-            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 rounded-full shadow-lg"
+            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border rounded-full shadow-lg"
+            style={{ borderColor: '#222229' }}
           />
         </motion.div>
 
