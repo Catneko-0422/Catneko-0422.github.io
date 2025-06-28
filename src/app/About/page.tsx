@@ -21,7 +21,7 @@ const skills = [
 
 const SkillRadar = () => (
   <div className="flex flex-col items-center gap-6">
-  <div className="text-center text-lg font-semibold text-blue-700 dark:text-[#98BAD2]">技能分佈</div>
+  <div className="text-center text-lg font-semibold text-indigo-700 dark:text-indigo-300">技能分佈</div>
     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
       {skills.map((skill, idx) => (
         <div key={idx} className="relative w-[180px] h-[180px] mx-auto sm:mx-0">
@@ -87,7 +87,7 @@ const certifications = [
 
 const Card = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <motion.div
-    className="relative bg-white dark:bg-[#1f1f28] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
+    className="relative bg-white dark:bg-[#1e293b] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
@@ -100,13 +100,13 @@ const Card = ({ title, children }: { title: string; children: React.ReactNode })
 
 const Timeline = ({ title, data }: { title: string; data: Record<string, string[]> }) => (
   <motion.div
-    className="relative bg-white dark:bg-[#1f1f28] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
+    className="relative bg-white dark:bg-[#1e293b] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
   >
-    <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-blue-400 via-cyan-400 to-teal-400 rounded-r-full animate-pulse" />
-    <h3 className="text-2xl font-bold mb-4 text-blue-700 dark:text-[#98BAD2] pl-4">{title}</h3>
+    <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-sky-400 via-emerald-400 to-teal-500 rounded-r-full animate-pulse" />
+    <h3 className="text-2xl font-bold mb-4 text-indigo-700 dark:text-indigo-300 pl-4">{title}</h3>
     <ul className="space-y-4 pl-4">
       {Object.entries(data).map(([year, items]) => (
         <li key={year}>
@@ -185,23 +185,26 @@ const About: React.FC = () => {
       </div>
 
       <div className="w-full max-w-6xl px-4 mt-12 flex flex-col gap-8">
-        <Card title="關於我">
-          嗨嗨～我是林奕安，一名來自雲林科技大學資訊管理系 AI 專班的學生，熱愛結合軟硬體技術打造創新專案。我擁有程式設計、機器學習與硬體控制經驗，持續精進中！
-        </Card>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Card title="關於我">
+            嗨嗨～我是林奕安，一名來自雲林科技大學資訊管理系 AI 專班的學生，熱愛結合軟硬體技術打造創新專案。我擁有程式設計、機器學習與硬體控制經驗，持續精進中！
+          </Card>
+          <Card title="技能雷達">
+            <SkillRadar />
+          </Card>
+        </div>
 
-        <Card title="技能雷達">
-          <SkillRadar />
-        </Card>
-
-        <Timeline title="經歷與成就" data={achievements} />
-        <Timeline title="參賽經歷" data={experiences} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <Timeline title="經歷與成就" data={achievements} />
+          <Timeline title="參賽經歷" data={experiences} />
+        </div>
 
         <Card title="專業證照" >
           <div className="flex flex-wrap justify-center gap-4 mt-2">
             {certifications.map((cert, idx) => (
               <div
                 key={idx}
-                className="bg-gray-200 dark:bg-[#2c2f3a] px-4 py-2 rounded-xl text-black dark:text-white text-sm shadow border border-[#98BAD2] hover:scale-105 transition-transform duration-200"
+                className="bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-xl text-black dark:text-white text-sm shadow border border-indigo-300 hover:scale-105 transition-transform duration-200"
               >
                 {cert.name}
               </div>
