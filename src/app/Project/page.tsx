@@ -104,7 +104,7 @@ const Project: React.FC = () => {
                   e.stopPropagation();
                   setZoomedRepoId(isZoomed ? null : repo.id);
                 }}
-                className={`bg-white dark:bg-[#1f1f28] rounded-xl overflow-auto border border-gray-700 shadow-md transition-all duration-300 ease-in-out
+                className={`bg-[#1f1f28] text-white rounded-xl overflow-auto border border-gray-700 shadow-md transition-all duration-300 ease-in-out
                 ${isZoomed
                   ? 'fixed top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2 scale-100 w-[70%] h-[80%] max-w-4xl'
                   : 'relative w-full h-[420px]'} flex flex-col cursor-pointer`}
@@ -127,10 +127,10 @@ const Project: React.FC = () => {
 
                 <div className="p-4 flex flex-col justify-between flex-grow">
                   <div>
-                    <h2 className="text-lg font-bold text-foreground mb-1 text-left ml-[10%]">
+                    <h2 className="text-lg font-bold text-white mb-1 text-left ml-[10%]">
                       {repo.name}
                     </h2>
-                    <p className="text-sm text-gray-400 line-clamp-2 mb-2 text-left ml-[10%]">
+                    <p className="text-sm text-gray-300 line-clamp-2 mb-2 text-left ml-[10%]">
                       {repo.description || 'No description provided.'}
                     </p>
                   </div>
