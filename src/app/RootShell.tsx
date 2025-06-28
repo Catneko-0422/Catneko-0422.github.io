@@ -3,9 +3,9 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +19,21 @@ const geistMono = Geist_Mono({
 
 export default function RootShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+
+  useEffect(() => {
+    const stored = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
+    const initial = stored === 'light' || stored === 'dark' ? stored : 'dark';
+    setTheme(initial as 'light' | 'dark');
+    document.documentElement.classList.toggle('dark', initial === 'dark');
+  }, []);
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('theme', theme);
+    }
+  }, [theme]);
 
   const navItems = [
     { label: "About", href: "/About" },
@@ -30,7 +45,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div
-      className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#222229] text-white flex flex-col min-h-screen`}
+      className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen bg-background text-foreground`}
     >
       <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-[#98BAD2] font-bold text-xl relative">
         <Link href="/" className="text-2xl font-bold hover:underline">
@@ -38,7 +53,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
         </Link>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-6 text-[20px]">
+        <nav className="hidden md:flex gap-6 text-[20px] items-center">
           {navItems.map((item) => (
             <Link
               key={item.label}
@@ -49,10 +64,24 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
               {item.label}
             </Link>
           ))}
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="ml-4 text-xl"
+            aria-label="Toggle Theme"
+          >
+            <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+          </button>
         </nav>
 
         {/* Mobile Hamburger */}
-        <div className="md:hidden">
+        <div className="md:hidden flex items-center gap-4">
+          <button
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="text-xl"
+            aria-label="Toggle Theme"
+          >
+            <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
+          </button>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="focus:outline-none text-2xl"
@@ -62,13 +91,13 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
           </button>
 
           {menuOpen && (
-            <div className="absolute top-16 right-4 bg-[#333348] text-white rounded-md shadow-lg py-2 px-4 z-50">
+            <div className="absolute top-16 right-4 bg-white dark:bg-[#333348] text-black dark:text-white rounded-md shadow-lg py-2 px-4 z-50">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   target={item.href.startsWith("http") ? "_blank" : undefined}
-                  className="block py-1 px-2 hover:bg-[#44445a] rounded-md"
+                  className="block py-1 px-2 hover:bg-gray-200 dark:hover:bg-[#44445a] rounded-md"
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
