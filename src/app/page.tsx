@@ -104,8 +104,7 @@ const Home: React.FC = () => {
           <img
             src="/profile.jpg"
             alt="Profile"
-            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border rounded-full shadow-lg"
-            style={{ borderColor: '#222229' }}
+            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-gray-200 dark:border-[#222229] rounded-full shadow-lg"
           />
         </motion.div>
 
@@ -124,7 +123,7 @@ const Home: React.FC = () => {
           </motion.h2>
 
           <motion.h1
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-[#98BAD2] mb-4 font-mono tracking-wider"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-blue-700 dark:text-[#98BAD2] mb-4 font-mono tracking-wider"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1, duration: 0.3 }}
@@ -139,10 +138,10 @@ const Home: React.FC = () => {
                 {char}
               </motion.span>
             ))}
-            <span className="animate-pulse text-[#BABABA]">|</span>
+            <span className="animate-pulse text-gray-600 dark:text-[#BABABA]">|</span>
           </motion.h1>
 
-          <p className="text-sm sm:text-base md:text-lg text-[#BABABA] leading-relaxed max-w-2xl">
+          <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-[#BABABA] leading-relaxed max-w-2xl">
             A student from <span className="text-green-400">NYUST</span> who loves{' '}
             <span className="text-pink-400">AI</span> and{' '}
             <span className="text-yellow-400">programming</span>.<br />
@@ -153,19 +152,19 @@ const Home: React.FC = () => {
 
           <div className="w-full mt-10 flex justify-center lg:justify-start">
             <div className="flex gap-8 text-4xl">
-              <a href="https://blog.nekocat.cc" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-black dark:hover:text-white">
+              <a href="https://blog.nekocat.cc" className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-black dark:hover:text-white">
                 <FontAwesomeIcon icon={faBookOpen} />
               </a>
-              <a href="https://www.facebook.com/neko.cat.863674/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-blue-400">
+              <a href="https://www.facebook.com/neko.cat.863674/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-blue-400">
                 <FontAwesomeIcon icon={faFacebook} />
               </a>
-              <a href="https://www.instagram.com/neko._cat422/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-pink-400">
+              <a href="https://www.instagram.com/neko._cat422/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-pink-400">
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
-              <a href="https://github.com/Catneko-0422" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-black dark:hover:text-white">
+              <a href="https://github.com/Catneko-0422" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-black dark:hover:text-white">
                 <FontAwesomeIcon icon={faGithub} />
               </a>
-              <a href="mailto:linyian0422@gmail.com" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-green-400">
+              <a href="mailto:linyian0422@gmail.com" className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-green-400">
                 <FontAwesomeIcon icon={faEnvelope} />
               </a>
             </div>
