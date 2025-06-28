@@ -21,8 +21,8 @@ const skills = [
 
 const SkillRadar = () => (
   <div className="flex flex-col items-center gap-6">
-  <div className="text-center text-lg font-semibold text-blue-700 dark:text-[#98BAD2]">技能分佈</div>
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+    <div className="text-center text-lg font-semibold text-blue-700 dark:text-[#98BAD2]">技能分佈</div>
+    <div className="grid grid-cols-1 gap-8">
       {skills.map((skill, idx) => (
         <div key={idx} className="relative w-[180px] h-[180px] mx-auto sm:mx-0">
           <Pie
@@ -53,7 +53,7 @@ const SkillRadar = () => (
             transition={{ delay: 0.3 + idx * 0.1, duration: 0.6 }}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center"
           >
-            <div className="text-white font-bold text-xl">{skill.value}%</div>
+            <div className="text-black dark:text-white font-bold text-xl">{skill.value}%</div>
             <div className="text-gray-400 text-sm">{skill.label}</div>
           </motion.div>
         </div>
@@ -124,7 +124,7 @@ const Timeline = ({ title, data }: { title: string; data: Record<string, string[
 
 const About: React.FC = () => {
   return (
-    <div className="w-full flex flex-col items-center text-white">
+    <div className="w-full flex flex-col items-center text-black dark:text-white">
       <div className="w-full h-[30vh]">
         <img src="/About_background.jpg" alt="Background" className="w-full h-full object-cover" />
       </div>
