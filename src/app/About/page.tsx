@@ -94,7 +94,7 @@ const Card = ({ title, children }: { title: string; children: React.ReactNode })
   >
     <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-purple-400 via-pink-400 to-yellow-400 rounded-r-full animate-pulse" />
     <h3 className="text-2xl font-bold mb-2 text-blue-700 dark:text-[#98BAD2] pl-4">{title}</h3>
-    <div className="text-[#ccd6f6] text-base pl-4">{children}</div>
+    <div className="text-gray-700 dark:text-[#ccd6f6] text-base pl-4">{children}</div>
   </motion.div>
 );
 
@@ -124,7 +124,7 @@ const Timeline = ({ title, data }: { title: string; data: Record<string, string[
 
 const About: React.FC = () => {
   return (
-    <div className="w-full flex flex-col items-center text-white">
+    <div className="w-full flex flex-col items-center text-gray-800 dark:text-white">
       <div className="w-full h-[30vh]">
         <img src="/About_background.jpg" alt="Background" className="w-full h-full object-cover" />
       </div>
@@ -156,7 +156,7 @@ const About: React.FC = () => {
           </motion.div>
 
           <motion.h2
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-400"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-600 dark:text-gray-400"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
@@ -165,7 +165,7 @@ const About: React.FC = () => {
           </motion.h2>
 
           <motion.p
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
@@ -174,7 +174,7 @@ const About: React.FC = () => {
           </motion.p>
 
           <motion.p
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-700 dark:text-gray-300"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
