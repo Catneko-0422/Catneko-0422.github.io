@@ -89,7 +89,7 @@ const Home: React.FC = () => {
   }, []);
 
   return (
-    <div className="w-full flex flex-col items-center text-white">
+    <div className="w-full flex flex-col items-center text-foreground">
       <div className="w-full h-[30vh]">
         <img src="/background.gif" alt="Background" className="w-full h-full object-cover" />
       </div>
@@ -153,7 +153,7 @@ const Home: React.FC = () => {
 
           <div className="w-full mt-10 flex justify-center lg:justify-start">
             <div className="flex gap-8 text-4xl">
-              <a href="https://blog.nekocat.cc" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-white">
+              <a href="https://blog.nekocat.cc" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-black dark:hover:text-white">
                 <FontAwesomeIcon icon={faBookOpen} />
               </a>
               <a href="https://www.facebook.com/neko.cat.863674/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-blue-400">
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
               <a href="https://www.instagram.com/neko._cat422/" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-pink-400">
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
-              <a href="https://github.com/Catneko-0422" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-white">
+              <a href="https://github.com/Catneko-0422" target="_blank" rel="noopener noreferrer" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-black dark:hover:text-white">
                 <FontAwesomeIcon icon={faGithub} />
               </a>
               <a href="mailto:linyian0422@gmail.com" className="transition-transform duration-200 hover:scale-125 text-[#BABABA] hover:text-green-400">

@@ -59,7 +59,7 @@ const Project: React.FC = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
-      className="w-full flex flex-col items-center text-white px-4 py-8 relative"
+      className="w-full flex flex-col items-center text-foreground px-4 py-8 relative"
     >
       <h1 className="text-4xl font-bold mb-6">Projects</h1>
       <p className="text-lg text-gray-400 mb-4">
@@ -75,7 +75,7 @@ const Project: React.FC = () => {
             className={`px-4 py-2 rounded-full border ${
               selectedTag === tag
                 ? 'bg-blue-500 text-white'
-                : 'bg-gray-800 text-gray-300'
+                : 'bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-300'
             } hover:bg-blue-600 transition`}
           >
             {tag}
@@ -127,7 +127,7 @@ const Project: React.FC = () => {
 
                 <div className="p-4 flex flex-col justify-between flex-grow">
                   <div>
-                    <h2 className="text-lg font-bold text-white mb-1 text-left ml-[10%]">
+                    <h2 className="text-lg font-bold text-foreground mb-1 text-left ml-[10%]">
                       {repo.name}
                     </h2>
                     <p className="text-sm text-gray-400 line-clamp-2 mb-2 text-left ml-[10%]">
@@ -157,7 +157,7 @@ const Project: React.FC = () => {
                             href={repo.homepage}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded shadow"
+                            className="inline-block bg-blue-500 hover:bg-blue-600 text-white dark:text-white px-4 py-2 rounded shadow"
                           >
                             🌐 Visit Website
                           </a>
@@ -177,7 +177,7 @@ const Project: React.FC = () => {
                         </div>
 
                         <p className="text-sm text-gray-400">
-                          Language: <span className="text-white">{repo.language || 'N/A'}</span>
+                          Language: <span className="text-foreground">{repo.language || 'N/A'}</span>
                         </p>
                       </div>
                     )}
