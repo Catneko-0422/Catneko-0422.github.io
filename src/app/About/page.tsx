@@ -50,8 +50,12 @@ const SkillRadar = () => (
             transition={{ delay: 0.3 + idx * 0.1, duration: 0.6 }}
             className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center"
           >
-            <div className="text-white font-bold text-xl">{skill.value}%</div>
-            <div className="text-gray-400 text-sm">{skill.label}</div>
+            <div className=" text-slate-950 dark:text-purple-100 font-bold text-xl">
+              {skill.value}%
+            </div>
+            <div className="text-slate-950 dark:text-purple-100 text-sm">
+              {skill.label}
+            </div>
           </motion.div>
         </div>
       ))}
@@ -93,7 +97,9 @@ const Card = ({
     <h3 className="text-2xl font-bold mb-2 text-blue-700 dark:text-[#98BAD2] pl-4">
       {title}
     </h3>
-    <div className="text-[#ccd6f6] text-base pl-4">{children}</div>
+    <div className="text-slate-950 dark:text-purple-100 text-base pl-4">
+      {children}
+    </div>
   </motion.div>
 );
 
@@ -117,8 +123,10 @@ const Timeline = ({
     <ul className="space-y-4 pl-4">
       {Object.entries(data).map(([year, items]) => (
         <li key={year}>
-          <p className="text-xl font-semibold text-[#d6e0f0]">{year}</p>
-          <ul className="list-disc pl-5 text-[#ccd6f6]">
+          <p className="text-xl font-semibold text-slate-950 dark:text-purple-100">
+            {year}
+          </p>
+          <ul className="list-disc pl-5 text-slate-950 dark:text-purple-100">
             {items.map((item, idx) => (
               <li key={idx}>{item}</li>
             ))}
@@ -160,14 +168,16 @@ const About: React.FC = () => {
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl text-black dark:text-purple-100 font-bold inline-block">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold inline-block text-slate-950 dark:text-purple-100">
               Nekocat
             </h1>
-            <span className="text-xl ml-2">(Yi-An Lin)</span>
+            <span className="text-xl ml-2 text-slate-950 dark:text-purple-100">
+              (Yi-An Lin)
+            </span>
           </motion.div>
 
           <motion.h2
-            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-gray-400"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-semibold text-slate-950 dark:text-purple-100"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.6 }}
@@ -176,7 +186,7 @@ const About: React.FC = () => {
           </motion.h2>
 
           <motion.p
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-950 dark:text-purple-100"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
@@ -186,7 +196,7 @@ const About: React.FC = () => {
           </motion.p>
 
           <motion.p
-            className="text-sm sm:text-base md:text-lg lg:text-xl text-gray-300"
+            className="text-sm sm:text-base md:text-lg lg:text-xl text-slate-950 dark:text-purple-100"
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6, duration: 0.6 }}
