@@ -4,6 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 import type React from "react";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
@@ -47,7 +48,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
     <div
       className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen bg-background text-foreground`}
     >
-      <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-[#98BAD2] font-bold text-xl relative">
+      <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-blue-700 dark:text-[#98BAD2] font-bold text-xl relative">
         <Link href="/" className="text-2xl font-bold hover:underline">
           nekocat.cc
         </Link>
@@ -64,24 +65,26 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
               {item.label}
             </Link>
           ))}
-          <button
+          <motion.button
+            whileTap={{ rotate: 90 }}
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="ml-4 text-xl"
             aria-label="Toggle Theme"
           >
             <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
-          </button>
+          </motion.button>
         </nav>
 
         {/* Mobile Hamburger */}
         <div className="md:hidden flex items-center gap-4">
-          <button
+          <motion.button
+            whileTap={{ rotate: 90 }}
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="text-xl"
             aria-label="Toggle Theme"
           >
             <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
-          </button>
+          </motion.button>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="focus:outline-none text-2xl"

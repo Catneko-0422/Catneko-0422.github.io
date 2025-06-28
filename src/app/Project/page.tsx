@@ -104,7 +104,7 @@ const Project: React.FC = () => {
                   e.stopPropagation();
                   setZoomedRepoId(isZoomed ? null : repo.id);
                 }}
-                className={`bg-[#1f1f28] rounded-xl overflow-auto border border-gray-700 shadow-md transition-all duration-300 ease-in-out 
+                className={`bg-white dark:bg-[#1f1f28] rounded-xl overflow-auto border border-gray-700 shadow-md transition-all duration-300 ease-in-out
                 ${isZoomed
                   ? 'fixed top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2 scale-100 w-[70%] h-[80%] max-w-4xl'
                   : 'relative w-full h-[420px]'} flex flex-col cursor-pointer`}
