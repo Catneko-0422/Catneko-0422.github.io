@@ -2,6 +2,12 @@
   {
     "name": "工作",
     "type": "folder",
-    "children": []
+    "children": [
+      {
+        "name": "小白板",
+        "type": "link",
+        "url": "https://app.ziteboard.com/?lang=TW"
+      }
+    ]
   }
 ]
