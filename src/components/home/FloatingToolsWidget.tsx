@@ -1,19 +1,24 @@
 "use client";
 
 /**
- * FloatingToolsWidget
- * - 右下角圓形按鈕（未開啟時緩慢上下浮動；開啟後停止）
- * - 面板：樹狀工具清單（只保留「詳細」按鈕）
- * - 詳細視窗：編輯/刪除（節點）、＋資料夾、＋連結（含根目錄）
- * - 支援 align="right" 讓目錄靠右（含右縮排）
- * - 移除顏色選項（types 中 color 可留作 optional，不使用）
+ * FloatingToolsWidget with Admin Lock
+ * - 右下角圓形按鈕（未開啟時上下浮動）
+ * - 面板：樹狀工具清單
+ * - 詳細：只有「開鎖（登入）」後才顯示
+ * - 標題右側鎖頭：🔒 點擊彈出密碼視窗 → 成功後變 🔓；再點一次會登出回到 🔒
+ * - 支援 align="right"（右對齊且詳細欄固定最右）
  */
 
 import React, { useEffect, useRef, useState } from "react";
 import type { ToolsTree, ToolNode } from "@/types/tools";
 import { motion, useReducedMotion, type Transition } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {
+    faChevronDown,
+    faChevronRight,
+    faLock,
+    faLockOpen,
+} from "@fortawesome/free-solid-svg-icons";
 
 const EASE_IN_OUT: NonNullable<Transition["ease"]> = [0.42, 0, 0.58, 1];
 
@@ -33,7 +38,7 @@ function getParentByPath(tree: ToolsTree, pathArray: string[]): ToolNode[] {
 const findIndexInParent = (parent: ToolNode[], name: string) =>
     parent.findIndex((n) => n.name === name);
 
-/* Modal (generic) */
+/* 基本 Modal 容器 */
 function Modal({
     title,
     onClose,
@@ -77,7 +82,73 @@ function Modal({
     );
 }
 
-/* DetailModal（外面只留「詳細」；新增資料夾/連結放到這裡） */
+/* 密碼登入視窗 */
+function AuthModal({
+    onClose,
+    onSuccess,
+}: {
+    onClose: () => void;
+    onSuccess: () => void;
+}) {
+    const [pwd, setPwd] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    async function doLogin(e: React.FormEvent) {
+        e.preventDefault();
+        if (!pwd) return;
+        setLoading(true);
+        try {
+            const r = await fetch("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ password: pwd }),
+            });
+            if (r.ok) {
+                onSuccess();
+                onClose();
+            } else {
+                alert("密碼錯誤或未設定 ADMIN_PASSWORD");
+            }
+        } catch {
+            alert("登入失敗，請稍後再試");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    return (
+        <Modal title="管理登入" onClose={onClose}>
+            <form onSubmit={doLogin} className="flex gap-2">
+                <input
+                    type="password"
+                    name="password"
+                    value={pwd}
+                    onChange={(e) => setPwd(e.target.value)}
+                    placeholder="請輸入管理密碼"
+                    className="w-full rounded border px-2 py-1 dark:bg-black/20"
+                    autoComplete="current-password"
+                    autoFocus
+                />
+                <button
+                    type="submit"
+                    disabled={loading || !pwd}
+                    className="rounded bg-blue-600 px-3 py-1 text-white hover:bg-blue-700 disabled:opacity-50"
+                >
+                    {loading ? "登入中…" : "登入"}
+                </button>
+                <button
+                    type="button"
+                    className="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300 dark:bg-black/30"
+                    onClick={onClose}   // ← 重點：呼叫 props 進來的 onClose
+                >
+                    取消
+                </button>
+            </form>
+        </Modal>
+    );
+}
+
+/* 詳細（編輯/刪除/＋資料夾/＋連結）— 僅在 isAdmin 時會被開啟呼叫 */
 function DetailModal({
     detailModal,
     setDetailModal,
@@ -93,10 +164,10 @@ function DetailModal({
 }) {
     if (!detailModal) return null;
     const node = detailModal.node;
-    const isRoot = !!node?.__isRoot; // 根目錄：只顯示 +資料夾/+連結
+    const isRoot = !!node?.__isRoot;
 
     const onSubmit = async (e: React.FormEvent) => {
-        if (isRoot) return; // 根目錄不提供編輯
+        if (isRoot) return;
         e.preventDefault();
         const form = e.target as HTMLFormElement;
         const name = (form.elements.namedItem("edit-name") as HTMLInputElement).value.trim();
@@ -168,7 +239,6 @@ function DetailModal({
 
         const optimistic = cloneTools(tools);
         try {
-            // folder 詳細→加在該資料夾底下；root 詳細→加在根層
             const parentPath = isRoot
                 ? []
                 : (detailModal.parentPath + "/" + node.name).split("/").filter(Boolean);
@@ -242,6 +312,13 @@ function DetailModal({
                     >
                         ＋連結
                     </button>
+                    <button
+                        type="button"
+                        className="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300 dark:bg-black/30"
+                        onClick={() => setDetailModal(null)}
+                    >
+                        取消
+                    </button>
                 </div>
             ) : (
                 <form onSubmit={onSubmit}>
@@ -276,13 +353,6 @@ function DetailModal({
                         </button>
                         <button
                             type="button"
-                            className="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300 dark:bg-black/30"
-                            onClick={() => setDetailModal(null)}
-                        >
-                            取消
-                        </button>
-                        <button
-                            type="button"
                             className="rounded bg-red-600 px-3 py-1 text-white hover:bg-red-700"
                             onClick={handleDelete}
                         >
@@ -306,6 +376,13 @@ function DetailModal({
                                 </button>
                             </>
                         )}
+                        <button
+                            type="button"
+                            className="rounded bg-gray-200 px-3 py-1 hover:bg-gray-300 dark:bg-black/30"
+                            onClick={() => setDetailModal(null)}
+                        >
+                            取消
+                        </button>
                     </div>
                 </form>
             )}
@@ -313,7 +390,7 @@ function DetailModal({
     );
 }
 
-/* TreeNode（外面只留「詳細」；支援 alignRight） */
+/* TreeNode */
 function TreeNode({
     nodes,
     path,
@@ -323,6 +400,7 @@ function TreeNode({
     floatLinks,
     prefersReducedMotion,
     alignRight,
+    isAdmin,
 }: {
     nodes: ToolNode[];
     path: string;
@@ -334,12 +412,10 @@ function TreeNode({
     floatLinks: boolean;
     prefersReducedMotion: boolean;
     alignRight: boolean;
+    isAdmin: boolean;
 }) {
-    // 計算當前深度，用來決定縮排（每層 16px）
     const depth = path ? path.split("/").filter(Boolean).length : 0;
     const indentPx = depth * 16;
-
-    // 只對「內容區」加縮排；右側詳細欄位不受影響
     const indentStyle: React.CSSProperties = alignRight
         ? { paddingInlineEnd: indentPx }
         : { paddingInlineStart: indentPx };
@@ -353,7 +429,6 @@ function TreeNode({
                     const isOpen = !!expanded[nodePath];
                     return (
                         <li key={nodePath} role="treeitem" aria-expanded={isOpen} className="mb-2 w-full">
-                            {/* 每列：左=內容區，右=詳細固定在最右 */}
                             <div className="grid w-full grid-cols-[1fr_auto] items-center">
                                 <div
                                     className={`flex items-center gap-2 ${alignRight ? "justify-end" : ""}`}
@@ -382,20 +457,21 @@ function TreeNode({
                                     </button>
                                 </div>
 
-                                {/* 右側固定欄位：詳細 */}
+                                {/* 右側固定欄：僅在 isAdmin 時顯示 */}
                                 <div className="justify-self-end">
-                                    <button
-                                        className="rounded bg-gray-200 px-2 py-0.5 text-sm dark:bg-black/30"
-                                        onClick={() => setDetailModal({ node, parentPath: path })}
-                                        title="詳細"
-                                        type="button"
-                                    >
-                                        詳細
-                                    </button>
+                                    {isAdmin && (
+                                        <button
+                                            className="rounded bg-gray-200 px-2 py-0.5 text-sm dark:bg-black/30"
+                                            onClick={() => setDetailModal({ node, parentPath: path })}
+                                            title="詳細"
+                                            type="button"
+                                        >
+                                            詳細
+                                        </button>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* 子節點放在下面（佔滿整列寬度），縮排交由子節點內容區處理 */}
                             {isOpen && node.children && (
                                 <div id={nodePath + "-children"} role="group" className="w-full">
                                     <TreeNode
@@ -407,6 +483,7 @@ function TreeNode({
                                         floatLinks={floatLinks}
                                         prefersReducedMotion={prefersReducedMotion}
                                         alignRight={alignRight}
+                                        isAdmin={isAdmin}
                                     />
                                 </div>
                             )}
@@ -415,7 +492,6 @@ function TreeNode({
                 } else {
                     return (
                         <li key={nodePath} role="treeitem" aria-selected="false" className="mb-2 w-full">
-                            {/* 左=連結內容（套縮排/動畫），右=詳細固定在最右 */}
                             <div className="grid w-full grid-cols-[1fr_auto] items-center">
                                 <div
                                     className={`flex items-center ${alignRight ? "justify-end" : ""}`}
@@ -452,14 +528,16 @@ function TreeNode({
                                 </div>
 
                                 <div className="justify-self-end">
-                                    <button
-                                        className="rounded bg-gray-200 px-2 py-0.5 text-sm dark:bg-black/30"
-                                        onClick={() => setDetailModal({ node, parentPath: path })}
-                                        title="詳細"
-                                        type="button"
-                                    >
-                                        詳細
-                                    </button>
+                                    {isAdmin && (
+                                        <button
+                                            className="rounded bg-gray-200 px-2 py-0.5 text-sm dark:bg-black/30"
+                                            onClick={() => setDetailModal({ node, parentPath: path })}
+                                            title="詳細"
+                                            type="button"
+                                        >
+                                            詳細
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </li>
@@ -470,8 +548,7 @@ function TreeNode({
     );
 }
 
-
-/* 主組件：外面只顯示「詳細」，根目錄的新增也放進詳細；支援 align="right" */
+/* 主組件 */
 export default function FloatingToolsWidget({
     offset = { right: 32, bottom: 32 },
     icon = "▣",
@@ -487,9 +564,12 @@ export default function FloatingToolsWidget({
     const [tools, setTools] = useState<ToolsTree>([]);
     const [expanded, setExpanded] = useState<Record<string, boolean>>({});
     const [detailModal, setDetailModal] = useState<{ node: any; parentPath: string } | null>(null);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [showAuth, setShowAuth] = useState(false);
+
     const prefersReducedMotion = useReducedMotion();
     const alignRight = align === "right";
-    const displayIcon = (show && iconOpen) ? iconOpen : icon;
+    const displayIcon = show && iconOpen ? iconOpen : icon;
 
     useEffect(() => {
         fetch("/api/tools")
@@ -501,9 +581,15 @@ export default function FloatingToolsWidget({
             const saved = localStorage.getItem("tools_expanded");
             if (saved) setExpanded(JSON.parse(saved));
         } catch { }
+
+        // 啟動時查詢是否已登入（有 admin cookie）
+        fetch("/api/auth/me")
+            .then((r) => r.json())
+            .then((d) => setIsAdmin(!!d.admin))
+            .catch(() => setIsAdmin(false));
     }, []);
 
-    // 浮動按鈕動畫：未開啟時上下浮動；開啟/ReducedMotion 時停止
+    // 浮動按鈕動畫
     const fabAnim =
         show || prefersReducedMotion
             ? { animate: { y: 0 } }
@@ -512,9 +598,25 @@ export default function FloatingToolsWidget({
                 transition: { repeat: Infinity, duration: 3, ease: EASE_IN_OUT } as Transition,
             };
 
-    // 根目錄「詳細」：只顯示新增按鈕
+    // 根目錄詳細：僅在 isAdmin 時可用
     const openRootDetail = () =>
+        isAdmin &&
         setDetailModal({ node: { __isRoot: true, name: "", type: "folder" }, parentPath: "" });
+
+    // 點鎖頭：未登入→打開 AuthModal；已登入→登出→關閉所有詳細
+    async function toggleLock() {
+        if (!isAdmin) {
+            setShowAuth(true);
+            return;
+        }
+        try {
+            await fetch("/api/admin/logout", { method: "POST" });
+            setIsAdmin(false);
+            setDetailModal(null);
+        } catch {
+            alert("登出失敗，請稍後再試");
+        }
+    }
 
     return (
         <>
@@ -528,11 +630,7 @@ export default function FloatingToolsWidget({
                 whileHover={prefersReducedMotion ? {} : { scale: 1.08 }}
                 {...fabAnim}
             >
-                <motion.span
-                    className="text-xl"
-                    animate={show ? { rotate: 45 } : { rotate: 0 }}
-                    transition={{ duration: 0.18 }}
-                >
+                <motion.span className="text-xl" animate={show ? { rotate: 45 } : { rotate: 0 }} transition={{ duration: 0.18 }}>
                     {displayIcon}
                 </motion.span>
             </motion.button>
@@ -546,17 +644,35 @@ export default function FloatingToolsWidget({
                     animate={prefersReducedMotion ? {} : { opacity: 1, scale: 1, y: 0 }}
                     transition={{ duration: 0.22, ease: EASE_IN_OUT }}
                     className="fixed z-50 rounded-xl bg-white p-4 text-gray-800 shadow-xl dark:bg-[#222229] dark:text-[#BABABA]"
-                    style={{ right: offset.right, bottom: offset.bottom + 56, minWidth: 240 }}
+                    style={{ right: offset.right, bottom: offset.bottom + 56, minWidth: 260 }}
                 >
-                    <div className={`mb-2 flex items-center ${alignRight ? "justify-between" : "justify-between"}`}>
+                    <div className="mb-2 flex items-center justify-between">
                         <span className="font-bold">小工具選單</span>
-                        <button
-                            className="rounded bg-gray-200 mr-1 px-2 py-0.5 text-sm dark:bg-black/30"
-                            onClick={openRootDetail}
-                            title="根目錄詳細（新增用）"
-                        >
-                            詳細
-                        </button>
+
+                        <div className="flex items-center gap-2">
+                            {/* 根目錄詳細（只有登入後才顯示） */}
+                            {isAdmin && (
+                                <button
+                                    className="rounded bg-gray-200 px-2 py-0.5 text-sm dark:bg-black/30"
+                                    onClick={openRootDetail}
+                                    title="根目錄詳細（新增用）"
+                                >
+                                    詳細
+                                </button>
+                            )}
+
+                            {/* 鎖頭按鈕 */}
+                            <button
+                                onClick={toggleLock}
+                                className={`rounded px-2 py-0.5 text-sm ${isAdmin ? "bg-emerald-600 text-white hover:bg-emerald-700" : "bg-gray-200 hover:bg-gray-300 dark:bg-black/30"
+                                    }`}
+                                title={isAdmin ? "點擊鎖上（登出管理）" : "點擊解鎖（管理登入）"}
+                                aria-pressed={isAdmin}
+                            >
+                                <FontAwesomeIcon icon={isAdmin ? faLockOpen : faLock} className="mr-1" />
+                                {isAdmin ? "開啟" : "鎖定"}
+                            </button>
+                        </div>
                     </div>
 
                     <div className={`max-h-[60vh] w-full overflow-auto pr-1 ${alignRight ? "text-right" : ""}`}>
@@ -569,18 +685,31 @@ export default function FloatingToolsWidget({
                             floatLinks={true}
                             prefersReducedMotion={!!prefersReducedMotion}
                             alignRight={alignRight}
+                            isAdmin={isAdmin}
                         />
                     </div>
                 </motion.div>
             )}
 
-            {/* Detail Modal */}
-            <DetailModal
-                detailModal={detailModal}
-                setDetailModal={setDetailModal}
-                tools={tools}
-                setTools={setTools}
-            />
+            {/* 管理登入視窗 */}
+            {showAuth && (
+                <AuthModal
+                    onClose={() => setShowAuth(false)}
+                    onSuccess={() => {
+                        setIsAdmin(true);
+                    }}
+                />
+            )}
+
+            {/* 詳細視窗（只有登入時才可能被開啟） */}
+            {isAdmin && (
+                <DetailModal
+                    detailModal={detailModal}
+                    setDetailModal={setDetailModal}
+                    tools={tools}
+                    setTools={setTools}
+                />
+            )}
         </>
     );
 }
