@@ -126,7 +126,7 @@ const ProfileHeader: React.FC = () => {
                     <img
                         src="/profile.jpg"
                         alt="Profile photo"
-                        className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-gray-200 dark:border-[#222229] rounded-full shadow-lg"
+                        className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-gray-200 dark:border-[oklch(0.23_0.015_260)] rounded-full shadow-lg"
                         loading="lazy"
                     />
                 </motion.div>
@@ -146,7 +146,7 @@ const ProfileHeader: React.FC = () => {
                     </motion.h2>
 
                     <motion.h1
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-blue-700 dark:text-[#98BAD2] mb-4 font-mono tracking-wider"
+                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-700 dark:text-purple-300 mb-4 font-mono tracking-wider"
                         initial={prefersReducedMotion ? false : { opacity: 0 }}
                         animate={prefersReducedMotion ? {} : { opacity: 1 }}
                         transition={{ delay: 1, duration: 0.3 }}
@@ -161,10 +161,10 @@ const ProfileHeader: React.FC = () => {
                                 {char}
                             </motion.span>
                         ))}
-                        <span className="animate-pulse text-gray-600 dark:text-[#BABABA]">|</span>
+                        <span className="animate-pulse text-purple-400 dark:text-purple-500">|</span>
                     </motion.h1>
 
-                    <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-[#BABABA] leading-relaxed max-w-2xl">
+                    <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-purple-200/70 leading-relaxed max-w-2xl">
                         A student from <span className="text-green-400">NYUST</span> who
                         loves <span className="text-pink-400">AI</span> and{" "}
                         <span className="text-yellow-400">programming</span>.<br />I am
@@ -179,7 +179,7 @@ const ProfileHeader: React.FC = () => {
                         <div className="flex gap-8 text-4xl">
                             <a
                                 href="https://blog.nekocat.cc"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-black dark:hover:text-white"
+                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-purple-600 dark:hover:text-purple-300"
                                 aria-label="Blog"
                             >
                                 <FontAwesomeIcon icon={faBookOpen} />
@@ -188,7 +188,7 @@ const ProfileHeader: React.FC = () => {
                                 href="https://www.facebook.com/neko.cat.863674/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-blue-400"
+                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-purple-500 dark:hover:text-purple-400"
                                 aria-label="Facebook"
                             >
                                 <FontAwesomeIcon icon={faFacebook} />
@@ -197,7 +197,7 @@ const ProfileHeader: React.FC = () => {
                                 href="https://www.instagram.com/neko._cat422/"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-pink-400"
+                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-pink-500 dark:hover:text-pink-400"
                                 aria-label="Instagram"
                             >
                                 <FontAwesomeIcon icon={faInstagram} />
@@ -206,14 +206,14 @@ const ProfileHeader: React.FC = () => {
                                 href="https://github.com/Catneko-0422"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-black dark:hover:text-white"
+                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-purple-600 dark:hover:text-purple-300"
                                 aria-label="GitHub"
                             >
                                 <FontAwesomeIcon icon={faGithub} />
                             </a>
                             <a
                                 href="mailto:linyian0422@gmail.com"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-[#BABABA] hover:text-green-400"
+                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-green-500 dark:hover:text-green-400"
                                 aria-label="Email"
                             >
                                 <FontAwesomeIcon icon={faEnvelope} />

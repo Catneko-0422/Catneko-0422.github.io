@@ -74,9 +74,9 @@ const Project: React.FC = () => {
             onClick={() => handleTagClick(tag)}
             className={`px-4 py-2 rounded-full border ${
               selectedTag === tag
-                ? 'bg-blue-500 text-white'
-                : 'bg-gray-200 dark:bg-gray-800 text-gray-800 dark:text-gray-300'
-            } hover:bg-blue-600 transition`}
+                ? 'bg-purple-600 text-white'
+                : 'bg-gray-200 dark:bg-[oklch(0.27_0.015_260)] text-gray-800 dark:text-gray-300'
+            } hover:bg-purple-700 transition`}
           >
             {tag}
           </motion.button>
@@ -104,7 +104,7 @@ const Project: React.FC = () => {
                   e.stopPropagation();
                   setZoomedRepoId(isZoomed ? null : repo.id);
                 }}
-                className={`bg-white dark:bg-[#1f1f28] rounded-xl overflow-auto border border-gray-700 shadow-md transition-all duration-300 ease-in-out
+                className={`bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-xl overflow-auto border border-gray-700 dark:border-purple-900 shadow-md transition-all duration-300 ease-in-out
                 ${isZoomed
                   ? 'fixed top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2 scale-100 w-[70%] h-[80%] max-w-4xl'
                   : 'relative w-full h-[420px]'} flex flex-col cursor-pointer`}
@@ -140,7 +140,7 @@ const Project: React.FC = () => {
                       {repo.topics.map((topic) => (
                         <span
                           key={topic}
-                          className="flex items-center gap-1 text-xs bg-gray-800 text-gray-300 px-2 py-1 rounded-full"
+                          className="flex items-center gap-1 text-xs bg-[oklch(0.27_0.015_260)] text-gray-300 px-2 py-1 rounded-full"
                         >
                           <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M4 3a1 1 0 011-1h10a1 1 0 011 1v3H4V3zM4 8h12v9a1 1 0 01-1 1H5a1 1 0 01-1-1V8z" />
@@ -157,7 +157,7 @@ const Project: React.FC = () => {
                             href={repo.homepage}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-block bg-blue-500 hover:bg-blue-600 text-white dark:text-white px-4 py-2 rounded shadow"
+                            className="inline-block bg-purple-600 hover:bg-purple-700 text-white dark:text-white px-4 py-2 rounded shadow"
                           >
                             🌐 Visit Website
                           </a>
@@ -182,14 +182,14 @@ const Project: React.FC = () => {
                       </div>
                     )}
 
-                    <hr className="w-[80%] border-t border-gray-500 my-4 mx-auto" />
+                    <hr className="w-[80%] border-t border-purple-200 dark:border-purple-800 my-4 mx-auto" />
 
                     <div className="mt-4">
                       <a
                         href={repo.html_url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="inline-flex items-center text-sm px-3 py-1 rounded hover:border-blue-400 hover:text-blue-400 transition"
+                        className="inline-flex items-center text-sm px-3 py-1 rounded hover:border-purple-400 hover:text-purple-400 transition"
                       >
                         View Details
                         <svg className="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">

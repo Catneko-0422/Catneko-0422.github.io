@@ -48,7 +48,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
     <div
       className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen bg-background text-foreground`}
     >
-      <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-blue-700 dark:text-[#98BAD2] font-bold text-xl relative">
+      <header className="w-full max-w-4xl mx-auto p-4 flex justify-between items-center text-purple-700 dark:text-purple-300 font-bold text-xl relative">
         <Link href="/" className="text-2xl font-bold hover:underline">
           nekocat.cc
         </Link>
@@ -94,13 +94,13 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
           </button>
 
           {menuOpen && (
-            <div className="absolute top-16 right-4 bg-white dark:bg-[#333348] text-black dark:text-white rounded-md shadow-lg py-2 px-4 z-50">
+            <div className="absolute top-16 right-4 bg-white dark:bg-[oklch(0.19_0.015_260)] text-black dark:text-white rounded-md shadow-lg py-2 px-4 z-50">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   target={item.href.startsWith("http") ? "_blank" : undefined}
-                  className="block py-1 px-2 hover:bg-gray-200 dark:hover:bg-[#44445a] rounded-md"
+                  className="block py-1 px-2 hover:bg-purple-100 dark:hover:bg-[oklch(0.27_0.015_260)] rounded-md"
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
@@ -115,9 +115,9 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
         {children}
       </main>
 
-      <hr className="w-[80%] border-t border-gray-500 my-4 mx-auto" />
+      <hr className="w-[80%] border-t border-purple-200 dark:border-purple-800 my-4 mx-auto" />
 
-      <footer className="w-full text-center text-sm text-gray-400 pb-4">
+      <footer className="w-full text-center text-sm text-purple-400 dark:text-purple-500 pb-4">
         © 2025 nekocat. All Rights Reserved.
       </footer>
     </div>

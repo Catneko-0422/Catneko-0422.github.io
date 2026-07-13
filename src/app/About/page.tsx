@@ -16,7 +16,7 @@ const skills = [
 
 const SkillRadar = () => (
   <div className="flex flex-col items-center gap-6">
-    <div className="text-center text-lg font-semibold text-blue-700 dark:text-[#98BAD2]">
+    <div className="text-center text-lg font-semibold text-purple-700 dark:text-purple-300">
       技能分佈
     </div>
     <div className="grid grid-cols-2 gap-8">
@@ -88,13 +88,13 @@ const Card = ({
   children: React.ReactNode;
 }) => (
   <motion.div
-    className="relative bg-white dark:bg-[#1f1f28] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
+    className="relative bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
   >
     <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-purple-400 via-pink-400 to-yellow-400 rounded-r-full animate-pulse" />
-    <h3 className="text-2xl font-bold mb-2 text-blue-700 dark:text-[#98BAD2] pl-4">
+    <h3 className="text-2xl font-bold mb-2 text-purple-700 dark:text-purple-300 pl-4">
       {title}
     </h3>
     <div className="text-slate-950 dark:text-purple-100 text-base pl-4">
@@ -111,12 +111,12 @@ const Timeline = ({
   data: Record<string, string[]>;
 }) => (
   <motion.div
-    className="relative bg-white dark:bg-[#1f1f28] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
+    className="relative bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
     initial={{ opacity: 0, y: 30 }}
     whileInView={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
   >
-    <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-blue-400 via-cyan-400 to-teal-400 rounded-r-full animate-pulse" />
+    <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-purple-400 via-pink-400 to-purple-300 rounded-r-full animate-pulse" />
     <h3 className="text-2xl font-bold mb-4 text-blue-700 dark:text-[#98BAD2] pl-4">
       {title}
     </h3>
@@ -158,7 +158,7 @@ const About: React.FC = () => {
           <img
             src="/About_profile.jpg"
             alt="Profile"
-            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-gray-200 dark:border-[#222229] rounded-full shadow-lg"
+            className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-gray-200 dark:border-[oklch(0.23_0.015_260)] rounded-full shadow-lg"
           />
         </motion.div>
 
@@ -225,7 +225,7 @@ const About: React.FC = () => {
             {certifications.map((cert, idx) => (
               <div
                 key={idx}
-                className="bg-gray-200 dark:bg-[#2c2f3a] px-4 py-2 rounded-xl text-black dark:text-white text-sm shadow border border-[#98BAD2] hover:scale-105 transition-transform duration-200"
+                className="bg-gray-200 dark:bg-[oklch(0.27_0.015_260)] px-4 py-2 rounded-xl text-black dark:text-white text-sm shadow border border-purple-300 dark:border-purple-600 hover:scale-105 transition-transform duration-200"
               >
                 {cert.name}
               </div>
