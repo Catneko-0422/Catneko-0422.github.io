@@ -88,10 +88,10 @@ const Card = ({
   children: React.ReactNode;
 }) => (
   <motion.div
-    className="relative bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
-    initial={{ opacity: 0, y: 30 }}
+    className="relative bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 mizuki-card"
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
+    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
   >
     <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-purple-400 via-pink-400 to-yellow-400 rounded-r-full animate-pulse" />
     <h3 className="text-2xl font-bold mb-2 text-purple-700 dark:text-purple-300 pl-4">
@@ -111,10 +111,10 @@ const Timeline = ({
   data: Record<string, string[]>;
 }) => (
   <motion.div
-    className="relative bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 hover:scale-[1.02] transition-transform duration-300"
-    initial={{ opacity: 0, y: 30 }}
+    className="relative bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-2xl shadow-xl w-full px-6 sm:px-8 py-6 mizuki-card"
+    initial={{ opacity: 0, y: 20 }}
     whileInView={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.6 }}
+    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
   >
     <div className="absolute top-6 left-0 w-1 h-12 bg-gradient-to-b from-purple-400 via-pink-400 to-purple-300 rounded-r-full animate-pulse" />
     <h3 className="text-2xl font-bold mb-4 text-blue-700 dark:text-[#98BAD2] pl-4">

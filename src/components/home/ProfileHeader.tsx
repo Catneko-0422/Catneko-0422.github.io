@@ -121,7 +121,7 @@ const ProfileHeader: React.FC = () => {
                     className="-mt-8 lg:-mt-8 flex justify-center lg:justify-start"
                     initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.8, filter: "blur(10px)" }}
                     whileInView={prefersReducedMotion ? {} : { opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.8 }}
+                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                 >
                     <img
                         src="/profile.jpg"
@@ -136,7 +136,7 @@ const ProfileHeader: React.FC = () => {
                         className="text-xl sm:text-2xl md:text-3xl font-bold mb-2"
                         initial={prefersReducedMotion ? false : { opacity: 0, x: -20 }}
                         animate={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
-                        transition={{ delay: 0.5, duration: 0.6 }}
+                        transition={{ delay: 0.3, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                     >
                         Hello~ I'm a{" "}
                         <span className="text-purple-400">
@@ -149,14 +149,14 @@ const ProfileHeader: React.FC = () => {
                         className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-700 dark:text-purple-300 mb-4 font-mono tracking-wider"
                         initial={prefersReducedMotion ? false : { opacity: 0 }}
                         animate={prefersReducedMotion ? {} : { opacity: 1 }}
-                        transition={{ delay: 1, duration: 0.3 }}
+                        transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
                     >
                         {letters.map((char, index) => (
                             <motion.span
                                 key={index}
                                 initial={prefersReducedMotion ? false : { opacity: 0, y: -10 }}
                                 animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.05 }}
+                                transition={{ delay: index * 0.03, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
                             >
                                 {char}
                             </motion.span>
@@ -177,47 +177,29 @@ const ProfileHeader: React.FC = () => {
 
                     <div className="w-full mt-10 flex justify-center lg:justify-start">
                         <div className="flex gap-8 text-4xl">
-                            <a
-                                href="https://blog.nekocat.cc"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-purple-600 dark:hover:text-purple-300"
-                                aria-label="Blog"
-                            >
-                                <FontAwesomeIcon icon={faBookOpen} />
-                            </a>
-                            <a
-                                href="https://www.facebook.com/neko.cat.863674/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-purple-500 dark:hover:text-purple-400"
-                                aria-label="Facebook"
-                            >
-                                <FontAwesomeIcon icon={faFacebook} />
-                            </a>
-                            <a
-                                href="https://www.instagram.com/neko._cat422/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-pink-500 dark:hover:text-pink-400"
-                                aria-label="Instagram"
-                            >
-                                <FontAwesomeIcon icon={faInstagram} />
-                            </a>
-                            <a
-                                href="https://github.com/Catneko-0422"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-purple-600 dark:hover:text-purple-300"
-                                aria-label="GitHub"
-                            >
-                                <FontAwesomeIcon icon={faGithub} />
-                            </a>
-                            <a
-                                href="mailto:linyian0422@gmail.com"
-                                className="transition-transform duration-200 hover:scale-125 text-gray-600 dark:text-purple-200/70 hover:text-green-500 dark:hover:text-green-400"
-                                aria-label="Email"
-                            >
-                                <FontAwesomeIcon icon={faEnvelope} />
-                            </a>
+                            {[
+                                { icon: faBookOpen, href: "https://blog.nekocat.cc", label: "Blog", hoverColor: "hover:text-purple-600 dark:hover:text-purple-300" },
+                                { icon: faFacebook, href: "https://www.facebook.com/neko.cat.863674/", label: "Facebook", hoverColor: "hover:text-purple-500 dark:hover:text-purple-400", external: true },
+                                { icon: faInstagram, href: "https://www.instagram.com/neko._cat422/", label: "Instagram", hoverColor: "hover:text-pink-500 dark:hover:text-pink-400", external: true },
+                                { icon: faGithub, href: "https://github.com/Catneko-0422", label: "GitHub", hoverColor: "hover:text-purple-600 dark:hover:text-purple-300", external: true },
+                                { icon: faEnvelope, href: "mailto:linyian0422@gmail.com", label: "Email", hoverColor: "hover:text-green-500 dark:hover:text-green-400" },
+                            ].map((item, i) => (
+                                <motion.a
+                                    key={item.label}
+                                    href={item.href}
+                                    target={item.external ? "_blank" : undefined}
+                                    rel={item.external ? "noopener noreferrer" : undefined}
+                                    className={`transition-all duration-200 text-gray-600 dark:text-purple-200/70 ${item.hoverColor}`}
+                                    initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
+                                    animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
+                                    transition={{ delay: 0.8 + i * 0.03, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
+                                    whileHover={{ scale: 1.2 }}
+                                    whileTap={{ scale: 0.9 }}
+                                    aria-label={item.label}
+                                >
+                                    <FontAwesomeIcon icon={item.icon} />
+                                </motion.a>
+                            ))}
                         </div>
                     </div>
                 </div>

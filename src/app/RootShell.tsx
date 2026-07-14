@@ -60,7 +60,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
               key={item.label}
               href={item.href}
               target={item.href.startsWith("http") ? "_blank" : undefined}
-              className="hover:underline"
+              className="mizuki-link hover:text-purple-500 dark:hover:text-purple-300 transition-colors duration-200"
             >
               {item.label}
             </Link>

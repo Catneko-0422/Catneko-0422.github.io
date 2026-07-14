@@ -107,10 +107,10 @@ const Project: React.FC = () => {
                 className={`bg-white dark:bg-[oklch(0.23_0.015_260)] rounded-xl overflow-auto border border-gray-700 dark:border-purple-900 shadow-md transition-all duration-300 ease-in-out
                 ${isZoomed
                   ? 'fixed top-1/2 left-1/2 z-50 transform -translate-x-1/2 -translate-y-1/2 scale-100 w-[70%] h-[80%] max-w-4xl'
-                  : 'relative w-full h-[420px]'} flex flex-col cursor-pointer`}
-                initial={{ opacity: 0, y: 30 }}
+                  : 'relative w-full h-[420px] mizuki-card'} flex flex-col cursor-pointer`}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
+                transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
               >
                 <div className="relative">
                   <img
