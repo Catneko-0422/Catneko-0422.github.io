@@ -1,4 +1,7 @@
-import React, { useEffect, useMemo, useState } from "react";
+'use client';
+
+import { useEffect, useMemo, useState } from "react";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faGithub,
@@ -6,7 +9,6 @@ import {
     faInstagram,
 } from "@fortawesome/free-brands-svg-icons";
 import { faEnvelope, faBookOpen } from "@fortawesome/free-solid-svg-icons";
-import { motion, useReducedMotion } from "framer-motion";
 
 /* ========== 小工具：隨機字 ========== */
 const getRandomChar = () => {
@@ -117,52 +119,42 @@ const ProfileHeader: React.FC = () => {
             </div>
 
             <div className="w-full max-w-6xl px-4 -mt-[30px] flex flex-col lg:flex-row items-center lg:items-start justify-start gap-8">
-                <motion.div
-                    className="-mt-8 lg:-mt-8 flex justify-center lg:justify-start"
-                    initial={prefersReducedMotion ? false : { opacity: 0, scale: 0.8, filter: "blur(10px)" }}
-                    whileInView={prefersReducedMotion ? {} : { opacity: 1, scale: 1, filter: "blur(0px)" }}
-                    transition={{ duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                <div
+                    className={`-mt-8 lg:-mt-8 flex justify-center lg:justify-start ${prefersReducedMotion ? "" : "mizuki-fade-in-scale"}`}
                 >
                     <img
                         src="/profile.jpg"
                         alt="Profile photo"
-                        className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-gray-200 dark:border-[oklch(0.23_0.015_260)] rounded-full shadow-lg"
+                        className="w-36 h-36 sm:w-40 sm:h-40 md:w-48 md:h-48 lg:w-56 lg:h-56 xl:w-64 xl:h-64 border-8 border-border dark:border-card rounded-full shadow-lg"
                         loading="lazy"
                     />
-                </motion.div>
+                </div>
 
                 <div className="text-center lg:text-left flex flex-col items-center lg:items-start lg:mt-[35px]">
-                    <motion.h2
-                        className="text-xl sm:text-2xl md:text-3xl font-bold mb-2"
-                        initial={prefersReducedMotion ? false : { opacity: 0, x: -20 }}
-                        animate={prefersReducedMotion ? {} : { opacity: 1, x: 0 }}
-                        transition={{ delay: 0.3, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                    <h2
+                        className={`text-xl sm:text-2xl md:text-3xl font-bold mb-2 ${prefersReducedMotion ? "" : "mizuki-fade-in-up mizuki-delay-300"}`}
                     >
                         Hello~ I'm a{" "}
                         <span className="text-purple-400">
                             {displayText}
                             <span className="animate-pulse">|</span>
                         </span>
-                    </motion.h2>
+                    </h2>
 
-                    <motion.h1
-                        className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-700 dark:text-purple-300 mb-4 font-mono tracking-wider"
-                        initial={prefersReducedMotion ? false : { opacity: 0 }}
-                        animate={prefersReducedMotion ? {} : { opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.5, ease: [0.4, 0, 0.2, 1] }}
+                    <h1
+                        className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-purple-700 dark:text-purple-300 mb-4 font-mono tracking-wider ${prefersReducedMotion ? "" : "mizuki-fade-in mizuki-delay-600"}`}
                     >
                         {letters.map((char, index) => (
-                            <motion.span
+                            <span
                                 key={index}
-                                initial={prefersReducedMotion ? false : { opacity: 0, y: -10 }}
-                                animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.03, duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+                                className={prefersReducedMotion ? "" : "mizuki-fade-in-up"}
+                                style={{ animationDelay: `${index * 0.03}s` }}
                             >
                                 {char}
-                            </motion.span>
+                            </span>
                         ))}
                         <span className="animate-pulse text-purple-400 dark:text-purple-500">|</span>
-                    </motion.h1>
+                    </h1>
 
                     <p className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-purple-200/70 leading-relaxed max-w-2xl">
                         A student from <span className="text-green-400">NYUST</span> who
@@ -184,21 +176,17 @@ const ProfileHeader: React.FC = () => {
                                 { icon: faGithub, href: "https://github.com/Catneko-0422", label: "GitHub", hoverColor: "hover:text-purple-600 dark:hover:text-purple-300", external: true },
                                 { icon: faEnvelope, href: "mailto:linyian0422@gmail.com", label: "Email", hoverColor: "hover:text-green-500 dark:hover:text-green-400" },
                             ].map((item, i) => (
-                                <motion.a
+                                <a
                                     key={item.label}
                                     href={item.href}
                                     target={item.external ? "_blank" : undefined}
                                     rel={item.external ? "noopener noreferrer" : undefined}
-                                    className={`transition-all duration-200 text-gray-600 dark:text-purple-200/70 ${item.hoverColor}`}
-                                    initial={prefersReducedMotion ? false : { opacity: 0, y: 10 }}
-                                    animate={prefersReducedMotion ? {} : { opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.8 + i * 0.03, duration: 0.4, ease: [0.4, 0, 0.2, 1] }}
-                                    whileHover={{ scale: 1.2 }}
-                                    whileTap={{ scale: 0.9 }}
+                                    className={`transition-all duration-200 text-gray-600 dark:text-purple-200/70 hover:scale-110 active:scale-90 mizuki-fade-in-up ${item.hoverColor}`}
+                                    style={{ animationDelay: `${0.8 + i * 0.03}s` }}
                                     aria-label={item.label}
                                 >
                                     <FontAwesomeIcon icon={item.icon} />
-                                </motion.a>
+                                </a>
                             ))}
                         </div>
                     </div>

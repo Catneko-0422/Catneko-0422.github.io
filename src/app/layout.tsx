@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 import type { Metadata } from "next";
 import type React from "react";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import RootShell from "./RootShell";
 
@@ -15,9 +16,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <RootShell>{children}</RootShell>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <RootShell>{children}</RootShell>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 import { createClient, type RedisClientType } from "redis";
 import type { ToolsTree } from "@/types/tools";
 import { cookies } from "next/headers";
-import { responseCookiesToRequestCookies } from "next/dist/server/web/spec-extension/adapters/request-cookies";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

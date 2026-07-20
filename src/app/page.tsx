@@ -1,7 +1,7 @@
 "use client";
 
 import ProfileHeader from "@/components/home/ProfileHeader";
-import FloatingToolsWidget from "@/components/home/FloatingToolsWidget";
+import FloatingToolsWidget from "@/components/tools/FloatingToolsWidget";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCat, faXmark } from "@fortawesome/free-solid-svg-icons";
 

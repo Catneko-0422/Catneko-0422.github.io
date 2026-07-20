@@ -2,9 +2,8 @@
 
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
-import type React from "react";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
@@ -20,27 +19,18 @@ const geistMono = Geist_Mono({
 
 export default function RootShell({ children }: { children: React.ReactNode }) {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
+  const [mounted, setMounted] = useState(false);
+  const { resolvedTheme, setTheme } = useTheme();
 
-  useEffect(() => {
-    const stored = typeof window !== 'undefined' ? localStorage.getItem('theme') : null;
-    const initial = stored === 'light' || stored === 'dark' ? stored : 'dark';
-    setTheme(initial as 'light' | 'dark');
-    document.documentElement.classList.toggle('dark', initial === 'dark');
-  }, []);
+  useEffect(() => setMounted(true), []);
 
-  useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('theme', theme);
-    }
-  }, [theme]);
+  const themeIcon = mounted && resolvedTheme === 'dark' ? faSun : faMoon;
 
   const navItems = [
-    { label: "About", href: "/About" },
-    { label: "Project", href: "/Project" },
-    { label: "Contact", href: "/Contact" },
-    { label: "Chat", href: "/Chat" },
+    { label: "About", href: "/about" },
+    { label: "Project", href: "/project" },
+    { label: "Contact", href: "/contact" },
+    { label: "Chat", href: "/chat" },
     { label: "Blog", href: "https://blog.nekocat.cc" },
   ];
 
@@ -65,26 +55,24 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
               {item.label}
             </Link>
           ))}
-          <motion.button
-            whileTap={{ rotate: 90 }}
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="ml-4 text-xl"
+          <button
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+            className="ml-4 text-xl active:rotate-90 transition-transform duration-200"
             aria-label="Toggle Theme"
           >
-            <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
-          </motion.button>
+            <FontAwesomeIcon icon={themeIcon} />
+          </button>
         </nav>
 
         {/* Mobile Hamburger */}
         <div className="md:hidden flex items-center gap-4">
-          <motion.button
-            whileTap={{ rotate: 90 }}
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-            className="text-xl"
+          <button
+            onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+            className="text-xl active:rotate-90 transition-transform duration-200"
             aria-label="Toggle Theme"
           >
-            <FontAwesomeIcon icon={theme === 'dark' ? faSun : faMoon} />
-          </motion.button>
+            <FontAwesomeIcon icon={themeIcon} />
+          </button>
           <button
             onClick={() => setMenuOpen(!menuOpen)}
             className="focus:outline-none text-2xl"
@@ -94,13 +82,13 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
           </button>
 
           {menuOpen && (
-            <div className="absolute top-16 right-4 bg-white dark:bg-[oklch(0.19_0.015_260)] text-black dark:text-white rounded-md shadow-lg py-2 px-4 z-50">
+            <div className="absolute top-16 right-4 bg-popover dark:bg-popover text-popover-foreground dark:text-popover-foreground rounded-md shadow-lg py-2 px-4 z-50">
               {navItems.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
                   target={item.href.startsWith("http") ? "_blank" : undefined}
-                  className="block py-1 px-2 hover:bg-purple-100 dark:hover:bg-[oklch(0.27_0.015_260)] rounded-md"
+                  className="block py-1 px-2 hover:bg-accent dark:hover:bg-accent rounded-md"
                   onClick={() => setMenuOpen(false)}
                 >
                   {item.label}
@@ -118,7 +106,7 @@ export default function RootShell({ children }: { children: React.ReactNode }) {
       <hr className="w-[80%] border-t border-purple-200 dark:border-purple-800 my-4 mx-auto" />
 
       <footer className="w-full text-center text-sm text-purple-400 dark:text-purple-500 pb-4">
-        © 2025 nekocat. All Rights Reserved.
+        © {new Date().getFullYear()} nekocat. All Rights Reserved.
       </footer>
     </div>
   );
